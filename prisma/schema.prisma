@@ -1,0 +1,240 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  imageUrl    String?
+  clerkUserId String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  memberships  Member[] // User can be a member in multiple trips
+  createdTrips Trip[] // Trips created by this user
+
+  @@index([email])
+}
+
+model Trip {
+  id          String   @id @default(cuid())
+  name        String
+  destination String
+  startDate   DateTime
+  endDate     DateTime
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Who created this trip
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
+
+  // Relations
+  members   Member[]
+  expenses  Expense[]
+  checklist ChecklistItem[]
+  timeline  TimelinePoint[]
+  locations Location[]
+  polls     Poll[]
+
+  @@index([creatorId])
+  @@index([destination])
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  name      String // Name within this trip (might differ from user's name)
+  isAdmin   Boolean  @default(false) // Can edit trip details
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tripId String
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  // Relation to a user
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Member can pay for expenses
+  paidExpenses Expense[] @relation("PaidBy")
+
+  // Expenses this member is part of
+  expenses ExpenseMember[]
+
+  // Checklist items assigned to member
+  assignedItems ChecklistItem[] @relation("AssignedTo")
+
+  // Poll votes - direct relation to poll options
+  votes PollVote[]
+
+  @@unique([tripId, userId]) // A user can only be a member of a trip once
+  @@index([tripId])
+  @@index([userId])
+}
+
+model Expense {
+  id        String   @id @default(cuid())
+  title     String
+  amount    Decimal  @db.Decimal(10, 2)
+  category  String
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tripId String
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  // Who paid for this expense
+  paidById String
+  paidBy   Member @relation("PaidBy", fields: [paidById], references: [id])
+
+  // Members involved in this expense
+  members ExpenseMember[]
+
+  @@index([tripId])
+  @@index([paidById])
+  @@index([category])
+  @@index([date])
+}
+
+// Combined table for expense splitting and repayment status
+model ExpenseMember {
+  id        String   @id @default(cuid())
+  hasRepaid Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  expenseId String
+  expense   Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([expenseId, memberId])
+  @@index([expenseId])
+  @@index([memberId])
+  @@index([hasRepaid])
+}
+
+model ChecklistItem {
+  id        String   @id @default(cuid())
+  title     String
+  completed Boolean  @default(false)
+  category  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tripId String
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  // Optional assignment to a member
+  assignedToId String?
+  assignedTo   Member? @relation("AssignedTo", fields: [assignedToId], references: [id])
+
+  @@index([tripId])
+  @@index([category])
+  @@index([completed])
+  @@index([assignedToId])
+}
+
+model TimelinePoint {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  time        String?
+  completed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  tripId String
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@index([tripId])
+  @@index([date])
+  @@index([completed])
+}
+
+model Location {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  notes     String?
+  category  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tripId String
+  trip   Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@index([tripId])
+  @@index([category])
+}
+
+// Simplified Poll model
+model Poll {
+  id        String   @id @default(cuid())
+  question  String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tripId  String
+  trip    Trip         @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  options PollOption[]
+
+  @@index([tripId])
+  @@index([isActive])
+}
+
+// Poll option with direct vote count
+model PollOption {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+
+  // Relations
+  pollId String
+  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+
+  // Votes for this option
+  votes PollVote[]
+
+  @@index([pollId])
+}
+
+// Simplified vote model
+model PollVote {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  // Relations
+  optionId String
+  option   PollOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, optionId])
+  @@index([memberId])
+  @@index([optionId])
+}
