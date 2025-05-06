@@ -76,20 +76,24 @@ export async function updateTripAction(data) {
   const loggedUser = await getLoggedUser();
   if (!loggedUser) throw new Error("Unauthorized");
 
-  const tripMembers = members.map((member) => {
-    if (member.userId === data.creatorId) {
-      return {
-        ...member,
-        isAdmin: true,
-      };
-    }
-    return member;
+  const existingMembers = await db.member.findMany({
+    where: { tripId: id },
+    select: { id: true, userId: true },
   });
 
+  const incomingUserIds = members.map((m) => m.userId);
+  const existingUserIds = existingMembers.map((m) => m.userId);
+
+  const toRemove = existingMembers.filter(
+    (m) => !incomingUserIds.includes(m.userId)
+  );
+
+  const toAdd = members.filter((m) => !existingUserIds.includes(m.userId));
+
+  const toUpdate = members.filter((m) => existingUserIds.includes(m.userId));
+
   const trip = await db.trip.update({
-    where: {
-      id,
-    },
+    where: { id },
     data: {
       name,
       destination,
@@ -98,19 +102,27 @@ export async function updateTripAction(data) {
       description,
       members: {
         deleteMany: {
-          tripId: id,
+          id: { in: toRemove.map((m) => m.id) },
         },
-        create: tripMembers.map((member) => ({
+        create: toAdd.map((member) => ({
           name: member.name,
           userId: member.userId,
           isAdmin: member.isAdmin || false,
+        })),
+        update: toUpdate.map((member) => ({
+          where: {
+            tripId_userId: { tripId: id, userId: member.userId },
+          },
+          data: {
+            name: member.name,
+            isAdmin: member.isAdmin || false,
+          },
         })),
       },
     },
   });
 
   revalidatePath(`/trips/${trip.id}`);
-
   return trip;
 }
 
@@ -145,8 +157,24 @@ export async function getTripById(id) {
     },
     include: {
       members: true,
-      polls: true,
-      expenses: true,
+      polls: {
+        include: {
+          options: {
+            include: {
+              votes: true,
+            },
+          },
+        },
+      },
+      expenses: {
+        include: {
+          expenseMembers: {
+            include: {
+              member: true, // if you want member details as well
+            },
+          },
+        },
+      },
       locations: true,
       checklist: true,
       timeline: true,

@@ -97,6 +97,8 @@ export default function DestinationInfo({ trip }) {
   const [daysUntilTrip, setDaysUntilTrip] = useState(0);
   const [activeTab, setActiveTab] = useState("info");
 
+  console.log("test");
+
   // Find destination data or use default
   const destinationKey =
     Object.keys(mockDestinationData).find((key) =>

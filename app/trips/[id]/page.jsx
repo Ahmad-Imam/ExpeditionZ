@@ -10,21 +10,25 @@ import {
 } from "lucide-react";
 
 import { getTripById } from "@/actions/trip";
+import { mockTrips } from "@/lib/mock-data";
 import TripHeader from "./_components/TripHeader";
-import Checklist from "./_components/TripTabs/checklist";
+import Checklist from "./_components/TripTabs/CheckList/Checklist";
 import DestinationInfo from "./_components/TripTabs/destination-info";
-import CostCalculator from "./_components/TripTabs/Expense/cost-calculator";
+import Expense from "./_components/TripTabs/Expense/Expense";
 import LocationsMap from "./_components/TripTabs/locations-map";
-import PollSystem from "./_components/TripTabs/poll-system";
+
 import TimelineCreator from "./_components/TripTabs/timeline-creator";
 import WeatherForecast from "./_components/TripTabs/weather-forecast";
+import PollSystem from "./_components/TripTabs/Polls/PollSystem";
 
 export default async function TripDetailPage({ params }) {
-  // const trip = mockTrips[0];
-
   const { id: tripId } = await params;
 
   const trip = await getTripById(tripId);
+  // console.log(trip);
+  // const trip = mockTrips[0];
+  const trips = mockTrips[0];
+  const tripss = await getTripById(tripId);
   // console.log(trip);
 
   return (
@@ -65,7 +69,7 @@ export default async function TripDetailPage({ params }) {
           </TabsList>
 
           <TabsContent value="expenses">
-            <CostCalculator trip={trip} />
+            <Expense trip={trip} />
           </TabsContent>
 
           <TabsContent value="checklist">

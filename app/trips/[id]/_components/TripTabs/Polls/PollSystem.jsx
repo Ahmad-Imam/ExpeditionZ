@@ -21,79 +21,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Check, Plus, Trash2, Vote, X } from "lucide-react";
 import { useState } from "react";
+import AddPoll from "./AddPoll";
 
 export default function PollSystem({ trip, setTrip }) {
-  const [newPoll, setNewPoll] = useState({
-    question: "",
-    options: [
-      { id: "1", text: "", votes: [] },
-      { id: "2", text: "", votes: [] },
-    ],
-  });
-  const [isAddingPoll, setIsAddingPoll] = useState(false);
-
-  const handleAddPoll = () => {
-    if (!newPoll.question || newPoll.options?.some((opt) => !opt.text)) return;
-
-    const poll = {
-      id: Date.now().toString(),
-      question: newPoll.question,
-      options: newPoll.options,
-      createdAt: new Date().toISOString(),
-      isActive: true,
-    };
-
-    setTrip({
-      ...trip,
-      polls: [...trip.polls, poll],
-    });
-
-    setNewPoll({
-      question: "",
-      options: [
-        { id: "1", text: "", votes: [] },
-        { id: "2", text: "", votes: [] },
-      ],
-    });
-
-    setIsAddingPoll(false);
-  };
-
-  const handleAddOption = () => {
-    if (!newPoll.options) return;
-
-    setNewPoll({
-      ...newPoll,
-      options: [
-        ...newPoll.options,
-        { id: (newPoll.options.length + 1).toString(), text: "", votes: [] },
-      ],
-    });
-  };
-
-  const handleRemoveOption = (index) => {
-    if (!newPoll.options || newPoll.options.length <= 2) return;
-
-    setNewPoll({
-      ...newPoll,
-      options: newPoll.options.filter((_, i) => i !== index),
-    });
-  };
-
-  const handleOptionChange = (index, value) => {
-    if (!newPoll.options) return;
-
-    const updatedOptions = [...newPoll.options];
-    updatedOptions[index] = { ...updatedOptions[index], text: value };
-
-    setNewPoll({
-      ...newPoll,
-      options: updatedOptions,
-    });
-  };
+  console.log("poll");
+  console.log(trip.polls);
 
   const handleVote = (pollId, optionId) => {
-    const userId = trip.members[0].id; // In a real app, this would be the current user's ID
+    const userId = trip?.members[0].id; // In a real app, this would be the current user's ID
 
     setTrip({
       ...trip,
@@ -147,124 +82,41 @@ export default function PollSystem({ trip, setTrip }) {
   };
 
   const getWinningOption = (poll) => {
-    if (poll.options.length === 0) return null;
+    if (poll?.options.length === 0) return null;
 
-    return poll.options.reduce((prev, current) =>
+    return poll?.options.reduce((prev, current) =>
       current.votes.length > prev.votes.length ? current : prev
     );
   };
 
-  const hasUserVoted = (poll) => {
-    const userId = trip.members[0].id; // In a real app, this would be the current user's ID
-    return poll.options.some((option) => option.votes.includes(userId));
-  };
-
   const getUserVote = (poll) => {
-    const userId = trip.members[0].id; // In a real app, this would be the current user's ID
+    const userId = trip?.members[0].id; // In a real app, this would be the current user's ID
     return poll.options.find((option) => option.votes.includes(userId));
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-2xl font-bold text-purple-900">Group Polls</h3>
+        <h3 className="text-2xl font-bold ">Group Polls</h3>
 
-        <Dialog open={isAddingPoll} onOpenChange={setIsAddingPoll}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Create Poll
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Poll</DialogTitle>
-              <DialogDescription>
-                Create a poll for your group to vote on.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="question">Question</Label>
-                <Input
-                  id="question"
-                  placeholder="Where should we eat dinner tonight?"
-                  value={newPoll.question}
-                  onChange={(e) =>
-                    setNewPoll({ ...newPoll, question: e.target.value })
-                  }
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>Options</Label>
-                <div className="space-y-2">
-                  {newPoll.options?.map((option, index) => (
-                    <div key={option.id} className="flex gap-2">
-                      <Input
-                        placeholder={`Option ${index + 1}`}
-                        value={option.text}
-                        onChange={(e) =>
-                          handleOptionChange(index, e.target.value)
-                        }
-                      />
-                      {newPoll.options && newPoll.options.length > 2 && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleRemoveOption(index)}
-                        >
-                          <Trash2 className="h-4 w-4 text-gray-500" />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleAddOption}
-                  className="mt-2"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Option
-                </Button>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsAddingPoll(false)}>
-                Cancel
-              </Button>
-              <Button
-                onClick={handleAddPoll}
-                disabled={
-                  !newPoll.question || newPoll.options?.some((opt) => !opt.text)
-                }
-              >
-                Create Poll
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <AddPoll trip={trip} />
       </div>
 
-      {trip.polls.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border">
-          <div className="bg-purple-100 inline-block p-4 rounded-full mb-4">
-            <Vote className="h-8 w-8 text-purple-600" />
+      {trip.polls?.length === 0 ? (
+        <div className="text-center py-12  rounded-lg border">
+          <div className=" inline-block p-4 rounded-full mb-4">
+            <Vote className="h-8 w-8 " />
           </div>
           <h3 className="text-xl font-semibold mb-2">No polls created yet</h3>
           <p className="text-gray-600 mb-6">
             Create polls to help your group make decisions
           </p>
-          <Button onClick={() => setIsAddingPoll(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Create First Poll
-          </Button>
+          <AddPoll trip={trip} />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {trip.polls.map((poll) => {
-            const totalVotes = poll.options.reduce(
+            const totalVotes = poll.options?.reduce(
               (sum, option) => sum + option.votes.length,
               0
             );
@@ -348,14 +200,12 @@ export default function PollSystem({ trip, setTrip }) {
                                 {option.text}
                               </span>
                               {isWinning && (
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium  text-purple-800">
                                   Winner
                                 </span>
                               )}
                               {isUserVote && poll.isActive && (
-                                <span className="text-xs text-purple-600">
-                                  Your vote
-                                </span>
+                                <span className="text-xs ">Your vote</span>
                               )}
                             </div>
                             <span className="text-sm font-medium">
@@ -365,7 +215,7 @@ export default function PollSystem({ trip, setTrip }) {
                           <div className="w-full bg-gray-200 rounded-full h-2">
                             <div
                               className={`h-2 rounded-full ${
-                                isWinning ? "bg-purple-600" : "bg-purple-400"
+                                isWinning ? "" : "bg-purple-400"
                               }`}
                               style={{ width: `${percentage}%` }}
                             ></div>
@@ -384,7 +234,7 @@ export default function PollSystem({ trip, setTrip }) {
                     <div className="text-sm font-medium mb-1">
                       Cast your vote:
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-6">
                       {poll.options.map((option) => (
                         <Button
                           key={option.id}

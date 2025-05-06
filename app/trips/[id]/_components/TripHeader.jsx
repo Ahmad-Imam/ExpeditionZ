@@ -3,8 +3,8 @@ import { Calendar, MapPin, Users } from "lucide-react";
 import EditTripDialog from "./EditTrip";
 
 export default function TripHeader({ trip }) {
-  const startDate = formatDate(trip.startDate);
-  const endDate = formatDate(trip.endDate);
+  const startDate = formatDate(trip?.startDate);
+  const endDate = formatDate(trip?.endDate);
 
   return (
     <div className="flex justify-between items-center">
@@ -21,7 +21,7 @@ export default function TripHeader({ trip }) {
           </div>
           <div className="flex items-center 2xl:text-2xl">
             <Users className="h-4 w-4 2xl:h-6 2xl:w-6 mr-1" />
-            {trip.members.length} travelers
+            {trip?.members.length} travelers
           </div>
         </div>
         {trip.description && (

@@ -1,5 +1,5 @@
 "use client";
-import { createExpenseAction } from "@/actions/expense";
+import { updateExpenseAction } from "@/actions/expense";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -21,20 +21,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useFetch from "@/hooks/useFetch";
-import { DollarSign, Plus } from "lucide-react";
+import { DollarSign, Edit } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export default function AddExpenseForm({ trip }) {
-  const [isAddingExpense, setIsAddingExpense] = useState(false);
+export default function EditExpenseForm({ trip, expense }) {
+  const [isEditingExpense, setIsEditingExpense] = useState(false);
 
   const {
-    data: expenseData,
-    error: addExpenseError,
-    fn: addExpenseFn,
-    loading: isAddingExpenseLoading,
-  } = useFetch(createExpenseAction);
+    data: updatedExpenseData,
+    error: updateExpenseError,
+    fn: updateExpenseFn,
+    loading: isEditingExpenseLoading,
+  } = useFetch(updateExpenseAction);
 
   const {
     register,
@@ -46,60 +46,62 @@ export default function AddExpenseForm({ trip }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: "",
-      amount: "",
-      paidBy: trip?.members[0]?.id || "",
-      splitWith: trip?.members.map((m) => m.id),
-      category: "food",
-      date: new Date().toISOString().slice(0, 10),
+      title: expense.title,
+      amount: expense.amount,
+      paidBy: expense.paidById,
+      splitWith: expense.expenseMembers.map((em) => em.memberId),
+      category: expense.category,
+      date: new Date(expense?.date).toISOString().slice(0, 10), // Format date to YYYY-MM-DD
     },
   });
 
   const onSubmit = async (data) => {
-    const expense = {
+    const updatedExpense = {
       ...data,
       amount: Number.parseFloat(data.amount),
       date: data.date,
-      repaidBy: [],
+
       tripId: trip.id,
+      id: expense.id, // Include the expense ID for updating
     };
 
-    const newExpense = await addExpenseFn(expense);
+    const result = await updateExpenseFn(updatedExpense);
 
-    reset({
-      title: "",
-      amount: "",
-      paidBy: trip?.members[0]?.id || "",
-      splitWith: trip?.members.map((m) => m.id),
-      category: "food",
-      date: new Date().toISOString().slice(0, 10),
-    });
-  };
-  useEffect(() => {
-    console.log("Expense data: effect");
-    if (addExpenseError)
-      toast.error("Error adding expense: " + addExpenseError.message);
-    if (expenseData && !isAddingExpenseLoading) {
-      toast.success("Expense created successfully!");
-      setIsAddingExpense(false);
-      // router.push("/job/" + createTripData?.id);
+    if (result) {
+      reset({
+        title: "",
+        amount: "",
+        paidBy: trip?.members[0]?.id || "",
+        splitWith: trip?.members.map((m) => m.id),
+        category: "food",
+        date: new Date().toISOString().slice(0, 10),
+      });
     }
-  }, [expenseData, isAddingExpenseLoading, addExpenseError]);
+  };
+
+  useEffect(() => {
+    if (updateExpenseError)
+      toast.error("Error updating expense: " + updateExpenseError.message);
+    if (updatedExpenseData && !isEditingExpenseLoading) {
+      toast.success("Expense updated successfully!");
+      setIsEditingExpense(false);
+    }
+  }, [updatedExpenseData, isEditingExpenseLoading, updateExpenseError]);
 
   return (
     <div>
-      <Dialog open={isAddingExpense} onOpenChange={setIsAddingExpense}>
+      <Dialog open={isEditingExpense} onOpenChange={setIsEditingExpense}>
         <DialogTrigger asChild>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Expense
+          <Button variant="outline" size="sm">
+            <Edit className="h-4 w-4 mr-2" />
+            Edit Expense
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add New Expense</DialogTitle>
+            <DialogTitle>Edit Expense</DialogTitle>
             <DialogDescription>
-              Enter the details of the expense to split with your group.
+              Update the details of the expense.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -243,12 +245,12 @@ export default function AddExpenseForm({ trip }) {
               <Button
                 variant="outline"
                 type="button"
-                onClick={() => setIsAddingExpense(false)}
+                onClick={() => setIsEditingExpense(false)}
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isAddingExpenseLoading}>
-                {isAddingExpenseLoading ? "Adding..." : "Add Expense"}
+              <Button type="submit" disabled={isEditingExpenseLoading}>
+                {isEditingExpenseLoading ? "Updating..." : "Update Expense"}
               </Button>
             </DialogFooter>
           </form>

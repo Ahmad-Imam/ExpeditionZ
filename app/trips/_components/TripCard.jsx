@@ -34,12 +34,12 @@ export default function TripCard({ trip }) {
             </div>
             <div className="flex items-center text-sm ">
               <Users className="h-4 w-4 mr-1" />
-              <span>{trip.members.length} travelers</span>
+              <span>{trip?.members.length} travelers</span>
             </div>
           </CardContent>
           <CardFooter className="border-t pt-4">
             <div className="flex -space-x-2">
-              {trip.members.slice(0, 3).map((member, i) => (
+              {trip?.members.slice(0, 3).map((member, i) => (
                 <div
                   key={i}
                   className="h-8 w-8 rounded-full bg-purple-200 flex items-center justify-center border-2 border-white"
@@ -53,10 +53,10 @@ export default function TripCard({ trip }) {
                   </span>
                 </div>
               ))}
-              {trip.members.length > 3 && (
+              {trip?.members.length > 3 && (
                 <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center border-2 border-white">
                   <span className="text-xs font-medium text-purple-800">
-                    +{trip.members.length - 3}
+                    +{trip?.members.length - 3}
                   </span>
                 </div>
               )}

@@ -88,7 +88,7 @@ model Member {
 model Expense {
   id        String   @id @default(cuid())
   title     String
-  amount    Decimal  @db.Decimal(10, 2)
+  amount    Float
   category  String
   date      DateTime
   createdAt DateTime @default(now())
@@ -100,10 +100,10 @@ model Expense {
 
   // Who paid for this expense
   paidById String
-  paidBy   Member @relation("PaidBy", fields: [paidById], references: [id])
+  paidBy   Member @relation("PaidBy", fields: [paidById], references: [id], onDelete: Cascade)
 
   // Members involved in this expense
-  members ExpenseMember[]
+  expenseMembers ExpenseMember[]
 
   @@index([tripId])
   @@index([paidById])
@@ -145,7 +145,7 @@ model ChecklistItem {
 
   // Optional assignment to a member
   assignedToId String?
-  assignedTo   Member? @relation("AssignedTo", fields: [assignedToId], references: [id])
+  assignedTo   Member? @relation("AssignedTo", fields: [assignedToId], references: [id], onDelete: Cascade)
 
   @@index([tripId])
   @@index([category])
