@@ -69,7 +69,7 @@ export default function AddPoll({ trip }) {
     if (pollData && !isAddingPollLoading) {
       toast.success("Poll created successfully!");
       reset();
-      //   setIsAddingPoll(false);
+      setIsAddingPoll(false);
     }
   }, [addPollError, pollData, isAddingPollLoading]);
 

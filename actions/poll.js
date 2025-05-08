@@ -34,3 +34,161 @@ export async function createPollAction(data) {
   revalidatePath(`/trips/${tripId}`);
   return poll;
 }
+
+export async function togglePollAction(poll) {
+  const loggedUser = await getLoggedUser();
+  if (!loggedUser) throw new Error("User not logged in");
+
+  const { id, isActive } = poll;
+
+  if (!id) throw new Error("Poll ID is required");
+  if (isActive === undefined) throw new Error("Poll status is required");
+
+  const updatedPoll = await db.poll.update({
+    where: { id: id },
+    data: { isActive: !isActive },
+  });
+
+  console.log("Poll updated:", updatedPoll);
+  revalidatePath(`/trips/${poll.tripId}`);
+  return updatedPoll;
+}
+
+export async function deletePollAction(poll) {
+  const loggedUser = await getLoggedUser();
+  if (!loggedUser) throw new Error("User not logged in");
+
+  const { id } = poll;
+
+  if (!id) throw new Error("Poll ID is required");
+
+  const deletedPoll = await db.poll.delete({
+    where: { id: id },
+  });
+
+  console.log("Poll deleted:", deletedPoll);
+  revalidatePath(`/trips/${poll.tripId}`);
+  return deletedPoll;
+}
+
+export async function votePollAction(pollId, optionId) {
+  const loggedUser = await getLoggedUser();
+  if (!loggedUser) throw new Error("User not logged in");
+
+  if (!pollId) throw new Error("Poll ID is required");
+  if (!optionId) throw new Error("Option ID is required");
+
+  const poll = await db.poll.findUnique({ where: { id: pollId } });
+  if (!poll) throw new Error("Poll not found");
+
+  const member = await db.member.findFirst({
+    where: { userId: loggedUser.id, tripId: poll.tripId },
+  });
+  if (!member) throw new Error("Member not found for this trip");
+
+  const alreadyVoted = await db.pollVote.findFirst({
+    where: {
+      memberId: member.id,
+      option: { pollId },
+    },
+  });
+  if (alreadyVoted) throw new Error("Already voted in this poll");
+
+  // Create the vote
+  await db.pollVote.create({
+    data: {
+      memberId: member.id,
+      optionId,
+    },
+  });
+
+  const updatedPoll = await db.poll.findUnique({
+    where: { id: pollId },
+    include: { options: { include: { votes: true } } },
+  });
+
+  revalidatePath(`/trips/${poll.tripId}`);
+  return updatedPoll;
+}
+
+export async function unvotePollAction(pollId, optionId) {
+  const loggedUser = await getLoggedUser();
+  if (!loggedUser) throw new Error("User not logged in");
+
+  if (!pollId) throw new Error("Poll ID is required");
+  if (!optionId) throw new Error("Option ID is required");
+
+  const poll = await db.poll.findUnique({ where: { id: pollId } });
+  if (!poll) throw new Error("Poll not found");
+
+  const member = await db.member.findFirst({
+    where: { userId: loggedUser.id, tripId: poll.tripId },
+  });
+  if (!member) throw new Error("Member not found for this trip");
+
+  const deletedPoll = await db.pollVote.deleteMany({
+    where: {
+      memberId: member.id,
+      optionId,
+    },
+  });
+
+  // const updatedPoll = await db.poll.findUnique({
+  //   where: { id: pollId },
+  //   include: { options: { include: { votes: true } } },
+  // });
+
+  revalidatePath(`/trips/${poll.tripId}`);
+  return deletedPoll;
+}
+
+export async function toggleVotePollAction(pollId, optionId) {
+  const loggedUser = await getLoggedUser();
+  if (!loggedUser) throw new Error("User not logged in");
+
+  if (!pollId) throw new Error("Poll ID is required");
+  if (!optionId) throw new Error("Option ID is required");
+
+  const poll = await db.poll.findUnique({ where: { id: pollId } });
+  if (!poll) throw new Error("Poll not found");
+
+  const member = await db.member.findFirst({
+    where: { userId: loggedUser.id, tripId: poll.tripId },
+  });
+  if (!member) throw new Error("Member not found for this trip");
+
+  const existingVote = await db.pollVote.findFirst({
+    where: {
+      memberId: member.id,
+      optionId,
+    },
+  });
+
+  if (existingVote) {
+    await db.pollVote.delete({
+      where: { id: existingVote.id },
+    });
+  } else {
+    await db.pollVote.deleteMany({
+      where: {
+        memberId: member.id,
+        option: { pollId },
+      },
+    });
+
+    await db.pollVote.create({
+      data: {
+        memberId: member.id,
+        optionId,
+      },
+    });
+  }
+
+  const updatedPoll = await db.poll.findUnique({
+    where: { id: pollId },
+    include: { options: { include: { votes: true } } },
+  });
+
+  revalidatePath(`/trips/${poll.tripId}`);
+  return updatedPoll;
+}

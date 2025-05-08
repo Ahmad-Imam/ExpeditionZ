@@ -173,11 +173,15 @@ model TimelinePoint {
 }
 
 model Location {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   name      String
   address   String
   notes     String?
   category  String
+  lat       Float
+  lng       Float
+  isVisited Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

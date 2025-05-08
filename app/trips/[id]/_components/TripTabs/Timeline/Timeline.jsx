@@ -2,13 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Calendar, Check, Clock } from "lucide-react";
 
-import AddTimelinePoint from "./Timeline/AddTimelinePoint";
+import AddTimelinePoint from "./AddTimelinePoint";
 import { formatDate } from "@/lib/utils";
-import EditTimelinePoint from "./Timeline/EditTimelinePoint";
-import DeleteTimelinePoint from "./Timeline/DeleteTimelinePoint";
-import ToggleTimelinePoint from "./Timeline/ToggleTimelinePoint";
+import EditTimelinePoint from "./EditTimelinePoint";
+import DeleteTimelinePoint from "./DeleteTimelinePoint";
+import ToggleTimelinePoint from "./ToggleTimelinePoint";
 
-export default function TimelineCreator({ trip }) {
+export default function Timeline({ trip }) {
   const timelinePointsByCreatedDate = trip.timeline.sort((a, b) => {
     const dateA = new Date(a.createdAt);
     const dateB = new Date(b.createdAt);

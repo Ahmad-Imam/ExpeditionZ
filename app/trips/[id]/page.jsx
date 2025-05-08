@@ -13,12 +13,12 @@ import { getTripById } from "@/actions/trip";
 import { mockTrips } from "@/lib/mock-data";
 import TripHeader from "./_components/TripHeader";
 import Checklist from "./_components/TripTabs/CheckList/Checklist";
-import DestinationInfo from "./_components/TripTabs/destination-info";
+import LocationInfo from "./_components/TripTabs/Info/InfoLocation";
 import Expense from "./_components/TripTabs/Expense/Expense";
-import LocationsMap from "./_components/TripTabs/locations-map";
+import Locations from "./_components/TripTabs/Locations/Locations";
 
-import TimelineCreator from "./_components/TripTabs/timeline-creator";
-import WeatherForecast from "./_components/TripTabs/weather-forecast";
+import Timeline from "./_components/TripTabs/Timeline/Timeline";
+import Weather from "./_components/TripTabs/Weather/Weather";
 import PollSystem from "./_components/TripTabs/Polls/PollSystem";
 
 export default async function TripDetailPage({ params }) {
@@ -29,6 +29,9 @@ export default async function TripDetailPage({ params }) {
   // const trip = mockTrips[0];
   const trips = mockTrips[0];
   const tripss = await getTripById(tripId);
+
+  // const generatedContents = await generateTripWeather(trip);
+
   // console.log(trip);
 
   return (
@@ -77,11 +80,11 @@ export default async function TripDetailPage({ params }) {
           </TabsContent>
 
           <TabsContent value="timeline">
-            <TimelineCreator trip={trip} />
+            <Timeline trip={trip} />
           </TabsContent>
 
           <TabsContent value="locations">
-            <LocationsMap trip={trip} />
+            <Locations trip={trip} />
           </TabsContent>
 
           <TabsContent value="polls">
@@ -89,11 +92,11 @@ export default async function TripDetailPage({ params }) {
           </TabsContent>
 
           <TabsContent value="weather">
-            <WeatherForecast trip={trip} />
+            <Weather trip={trip} />
           </TabsContent>
 
           <TabsContent value="info">
-            <DestinationInfo trip={trip} />
+            <LocationInfo trip={trip} />
           </TabsContent>
         </Tabs>
       </main>
