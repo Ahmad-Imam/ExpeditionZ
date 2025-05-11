@@ -20,7 +20,6 @@ import {
   toggleCheckListItemAction,
 } from "@/actions/checklist";
 import { toast } from "sonner";
-import { set } from "react-hook-form";
 
 export default function CheckListItems({ trip }) {
   const categories = [
@@ -36,12 +35,14 @@ export default function CheckListItems({ trip }) {
     return categories.find((cat) => cat.value === value)?.label || value;
   };
   const [filter, setFilter] = useState("all");
-  const filteredItems = trip.checklist.filter((item) => {
-    if (filter === "all") return true;
-    if (filter === "completed") return item.completed;
-    if (filter === "pending") return !item.completed;
-    return item.category === filter;
-  });
+  const filteredItems = trip.checklist
+    .filter((item) => {
+      if (filter === "all") return true;
+      if (filter === "completed") return item.completed;
+      if (filter === "pending") return !item.completed;
+      return item.category === filter;
+    })
+    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
   const [loading, setLoading] = useState(false);
 
@@ -61,7 +62,7 @@ export default function CheckListItems({ trip }) {
   async function toggleItemCompletion(item, val) {
     try {
       setLoading(true);
-      await toggleCheckListItemAction(item?.id, val);
+      await toggleCheckListItemAction(item?.id, val, trip.id);
       console.log(val);
       console.log(item);
       toast.success("Item updated successfully");

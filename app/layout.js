@@ -37,8 +37,8 @@ export default function RootLayout({ children }) {
               </main>
               <Toaster richColors />
               <footer className="my-12 w-full bg-background">
-                <div className="mx-auto px-4 text-center text-gray-400">
-                  Made with Next.js
+                <div className=" mx-auto px-4 text-center">
+                  <p>© {new Date().getFullYear()} ExpeditionZ Travel Planner</p>
                 </div>
               </footer>
             </div>

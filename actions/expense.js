@@ -1,12 +1,13 @@
 "use server";
 import { db } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { getLoggedUser } from "./user";
+
+import { getLoggedTripMember } from "./trip";
 
 export async function createExpenseAction(data) {
-  console.log(data);
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
+  const loggedTripMember = await getLoggedTripMember(data?.tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   const { tripId, title, amount, paidBy, splitWith, category, date } = data;
 
@@ -37,8 +38,9 @@ export async function createExpenseAction(data) {
 
 export async function updateExpenseAction(data) {
   const { id, tripId, title, amount, category, date, paidBy, splitWith } = data;
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
+  const loggedTripMember = await getLoggedTripMember(data?.tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   // ensure expense belongs to this trip
   const existing = await db.expense.findUnique({
@@ -87,13 +89,12 @@ export async function updateExpenseAction(data) {
   return expense;
 }
 
-export async function repayExpenseAction({ expenseMember, hasRepaid }) {
-  console.log("expenseMember");
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
-  console.log("expenseId");
-  console.log(expenseMember);
-  const { expenseId, memberId, id } = expenseMember;
+export async function repayExpenseAction({ expenseMember, hasRepaid, tripId }) {
+  const loggedTripMember = await getLoggedTripMember(tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
+
+  const { expenseId, id } = expenseMember;
 
   // ensure expense belongs to this trip
   const existing = await db.expense.findUnique({
@@ -115,8 +116,9 @@ export async function repayExpenseAction({ expenseMember, hasRepaid }) {
 }
 
 export async function deleteExpenseAction({ id, tripId }) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
+  const loggedTripMember = await getLoggedTripMember(tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   // ensure expense belongs to this trip
   const existing = await db.expense.findUnique({

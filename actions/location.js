@@ -19,3 +19,19 @@ export async function addLocationAction(data) {
 
   return newLocation;
 }
+
+export async function deleteLocationAction(locationId) {
+  const loggedUser = await getLoggedUser();
+
+  if (!loggedUser) throw new Error("Unauthorized");
+
+  const deletedLocation = await db.location.delete({
+    where: {
+      id: locationId,
+    },
+  });
+
+  revalidatePath("/trips/" + deletedLocation.tripId);
+
+  return deletedLocation;
+}

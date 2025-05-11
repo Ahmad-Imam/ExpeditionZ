@@ -111,7 +111,6 @@ model Expense {
   @@index([date])
 }
 
-// Combined table for expense splitting and repayment status
 model ExpenseMember {
   id        String   @id @default(cuid())
   hasRepaid Boolean  @default(false)

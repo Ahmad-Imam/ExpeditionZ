@@ -176,4 +176,9 @@
   .hide-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome/Safari/Webkit */
   }
+
+  .gray-popup .mapboxgl-popup-content .mapboxgl-popup-tip {
+    background-color: gray;
+    border-color: gray;
+  }
 }

@@ -4,11 +4,13 @@
 
 import { db } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { getLoggedUser } from "./user";
+
+import { getLoggedTripMember } from "./trip";
 
 export async function createCheckListItemAction(data) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
+  const loggedTripMember = await getLoggedTripMember(data?.tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   const { tripId, title, category, assignedTo } = data;
 
@@ -28,8 +30,9 @@ export async function createCheckListItemAction(data) {
 }
 
 export async function editCheckListItemAction(data) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
+  const loggedTripMember = await getLoggedTripMember(data?.tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   const { id, title, category, assignedTo, completed } = data;
 
@@ -50,8 +53,9 @@ export async function editCheckListItemAction(data) {
 }
 
 export async function deleteCheckListItemAction(data) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
+  const loggedTripMember = await getLoggedTripMember(data?.tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   const { id } = data;
 
@@ -64,9 +68,10 @@ export async function deleteCheckListItemAction(data) {
   return checklistItem;
 }
 
-export async function toggleCheckListItemAction(itemId, val) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
+export async function toggleCheckListItemAction(itemId, val, tripId) {
+  const loggedTripMember = await getLoggedTripMember(tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   if (!itemId) throw new Error("Checklist item ID is required");
 

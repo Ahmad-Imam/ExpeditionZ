@@ -5,9 +5,7 @@ export default function Locations({ trip }) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-2xl font-bold text-purple-900">
-          Must-See Locations
-        </h3>
+        <h3 className="text-2xl font-bold ">Must see locations</h3>
       </div>
 
       <LocationClient trip={trip} />

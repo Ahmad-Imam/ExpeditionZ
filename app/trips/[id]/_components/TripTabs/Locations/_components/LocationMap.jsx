@@ -13,9 +13,9 @@ export default function LocationMap({ locations = [], selectedLocation }) {
 
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/streets-v12",
-      center: [-74.5, 40], // Default center
-      zoom: 8,
+      style: process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL,
+      center: [-74.5, 40],
+      zoom: 5,
     });
 
     return () => {
@@ -41,10 +41,10 @@ export default function LocationMap({ locations = [], selectedLocation }) {
         const popup = new mapboxgl.Popup({
           closeButton: true,
           closeOnClick: false,
-
+          className: "gray-popup",
           maxWidth: "200px",
         }).setHTML(`
-          <div class="p-4">
+          <div class="bg-gray-500 p-4 gray-popup">
             <h3 class="font-bold text-sm mb-1">${location.name}</h3>
             <p class="text-xs ">${location.address}</p>
           </div>
@@ -53,7 +53,7 @@ export default function LocationMap({ locations = [], selectedLocation }) {
         popupsRef.current.set(location.id, popup);
 
         const marker = new mapboxgl.Marker({
-          color: "#666666",
+          color: "red",
         })
           .setLngLat([lng, lat])
           .setPopup(popup)

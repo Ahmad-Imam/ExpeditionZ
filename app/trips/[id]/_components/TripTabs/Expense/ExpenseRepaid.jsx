@@ -18,20 +18,21 @@ export default function ExpenseRepaid({ expense, expenseMember }) {
   //   console.log("expenseMember");
   //   console.log(expenseMember);
 
-  const [repaid, setRepaid] = useState(expenseMember?.hasRepaid || false);
+  const amountPerPerson = expense?.amount / expense?.expenseMembers.length;
 
-  const amountPerPerson = expense.amount / expense?.expenseMembers.length;
-
-  async function handleExpenseRepay() {
+  async function handleExpenseRepay(expenseMember) {
     console.log("repay");
 
-    await repayExpenseFn({ expenseMember, hasRepaid: !repaid });
+    await repayExpenseFn({
+      expenseMember,
+      hasRepaid: !expenseMember?.hasRepaid,
+      tripId: expense?.tripId,
+    });
   }
 
   useEffect(() => {
     if (repayData && !repayLoading) {
       toast.success("Expense repaid updated successfully");
-      setRepaid(!repaid);
     } else if (repayError) {
       console.error("Error repaying expense", repayError);
       toast.error("Error repaying expense: " + repayError.message);
@@ -39,11 +40,30 @@ export default function ExpenseRepaid({ expense, expenseMember }) {
   }, [repayData, repayError, repayLoading]);
 
   return (
-    <Button onClick={handleExpenseRepay} className="cursor-pointer p-3 text-sm">
-      {repaid && <CheckCheck className="ml-1 h-3 w-3" />}
-      {!repayLoading
-        ? expenseMember?.member?.name + ": " + formatCurrency(amountPerPerson)
-        : "Updating..."}
-    </Button>
+    <div className="mt-4 border-t pt-4">
+      <p className="text-md font-medium mb-2">Mark as repaid / pay:</p>
+      <div className="flex flex-wrap gap-2">
+        {expense?.expenseMembers.map((expenseMember) => {
+          if (expenseMember?.memberId === expense.paidById) return null; // Skip the person who paid
+
+          return (
+            <Button
+              onClick={() => handleExpenseRepay(expenseMember)}
+              className="cursor-pointer p-3 text-sm"
+              key={expenseMember?.id}
+            >
+              {expenseMember?.hasRepaid && (
+                <CheckCheck className="ml-1 h-3 w-3" />
+              )}
+              {!repayLoading
+                ? expenseMember?.member?.name +
+                  ": " +
+                  formatCurrency(amountPerPerson)
+                : "Updating..."}
+            </Button>
+          );
+        })}
+      </div>
+    </div>
   );
 }

@@ -186,7 +186,7 @@ export async function getTripById(id) {
 
 export async function getLoggedTripMember(tripId) {
   const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
+  if (!loggedUser) throw new Error("Unauthorized. Please login.");
 
   const tripMember = await db.member.findFirst({
     where: {

@@ -76,25 +76,12 @@ export default function ExpenseTab({ trip }) {
                     </div>
                   </div>
 
-                  {/* Repayment section */}
-                  <div className="mt-4 border-t pt-4">
-                    <p className="text-md font-medium mb-2">Mark as repaid:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {expense?.expenseMembers.map((expenseMember) => {
-                        if (expenseMember?.memberId === expense.paidById)
-                          return null; // Skip the person who paid
-                        const person = getMemberById(expenseMember?.memberId);
-
-                        return (
-                          <ExpenseRepaid
-                            key={expenseMember?.memberId}
-                            expense={expense}
-                            expenseMember={expenseMember}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
+                  <ExpenseRepaid
+                    expense={expense}
+                    expenseMember={trip?.members.find(
+                      (m) => m.id === expense.paidById
+                    )}
+                  />
                 </CardContent>
               </Card>
             );

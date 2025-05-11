@@ -4,6 +4,7 @@ import {
   FileText,
   LayoutDashboard,
   PenBox,
+  PlaneIcon,
   Stars,
 } from "lucide-react";
 import Link from "next/link";
@@ -61,18 +62,9 @@ export default async function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem asChild>
-                  <Link
-                    href="/dashboard/resume-builder"
-                    className="flex items-center gap-2"
-                  >
-                    <FileText className="h-4 w-4" />
-                    Resume
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/create/job" className="flex items-center gap-2">
-                    <PenBox className="h-4 w-4" />
-                    Job Application
+                  <Link href="/trips/new" className="flex items-center gap-2">
+                    <PlaneIcon className="h-4 w-4" />
+                    Trip
                   </Link>
                 </DropdownMenuItem>
                 {/* <DropdownMenuItem asChild>

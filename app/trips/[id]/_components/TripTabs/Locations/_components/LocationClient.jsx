@@ -3,10 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { Edit, MapPin, Plus, Trash2 } from "lucide-react";
+import { Edit, Loader2, MapPin, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import LocationMap from "./LocationMap";
 import AddLocation from "./AddLocation";
+import { toast } from "sonner";
+import { deleteLocationAction } from "@/actions/location";
 
 export default function LocationClient({ trip }) {
   //   console.log(trip?.locations);
@@ -45,20 +47,37 @@ export default function LocationClient({ trip }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
   console.log(selectedLocation);
 
+  const [loading, setLoading] = useState(false);
+
+  async function handleDeleteLocation(locationId) {
+    try {
+      setLoading(true);
+
+      const deletedLocation = await deleteLocationAction(locationId);
+
+      toast.success("Location deleted successfully");
+    } catch (error) {
+      toast.error("Error deleting location: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <div className="flex flex-col justify-between gap-4 ">
-      <div>
+    <div className="flex flex-col justify-between gap-6 ">
+      <div className="flex justify-end">
         <AddLocation trip={trip} />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-[600px]">
-        <div className="lg:col-span-2 bg-blue-500 rounded-lg relative overflow-hidden w-full">
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-[600px] relative">
+        <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+
+        <div className="lg:col-span-2  rounded-lg relative overflow-hidden w-full">
           {trip.locations.length === 0 ? (
             <div className="text-center p-6">
-              <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <MapPin className="h-12 w-12  mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No locations added</h3>
-              <p className="text-gray-600 mb-4">
-                Add locations to see them on the map
-              </p>
+              <p className=" mb-4">Add locations to see them on the map</p>
             </div>
           ) : (
             <LocationMap
@@ -80,37 +99,37 @@ export default function LocationClient({ trip }) {
               <Card
                 key={location.id}
                 onClick={() => setSelectedLocation(location)}
-                className={`cursor-pointer `}
+                className={`cursor-pointer ${
+                  selectedLocation?.id === location?.id
+                    ? "bg-card-foreground/10"
+                    : ""
+                }`}
               >
-                <CardHeader className="pb-2">
+                <CardHeader className="">
                   <div className="flex justify-between">
                     <CardTitle className="text-lg">{location.name}</CardTitle>
                     <div className="flex gap-1">
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => {
-                          setEditingLocation(location);
-                          setIsEditingLocation(true);
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteLocation(location.id);
                         }}
+                        disabled={loading}
                       >
-                        <Edit className="h-4 w-4 text-gray-500" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        //   onClick={() => handleDeleteLocation(location.id)}
-                      >
-                        <Trash2 className="h-4 w-4 text-gray-500" />
+                        {loading ? (
+                          <Loader2 className="animate-spin">...</Loader2>
+                        ) : (
+                          <Trash2 className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className={""}>
                   <div className="space-y-2">
-                    <div className="text-sm text-gray-600">
-                      {location.address}
-                    </div>
+                    <div className="text-md ">{location.address}</div>
                     <div className="flex items-center">
                       <span
                         className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(
@@ -121,9 +140,7 @@ export default function LocationClient({ trip }) {
                       </span>
                     </div>
                     {location.notes && (
-                      <div className="text-sm text-gray-700 mt-2">
-                        {location.notes}
-                      </div>
+                      <div className="text-sm  mt-2">{location.notes}</div>
                     )}
                   </div>
                 </CardContent>

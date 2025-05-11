@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { MapPin, Plus } from "lucide-react";
+import { Airplay, MapPin, PlaneIcon, Plus } from "lucide-react";
 import Link from "next/link";
 
 import { getTrips } from "@/actions/trip";
@@ -10,13 +10,13 @@ export default async function TripsPage() {
   // console.log(allTrips);
 
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen sm:w-xl md:2xl lg:w-4xl xl:w-3/4 mx-auto">
       <header className=" mx-auto py-6 px-4">
         <div className="flex justify-between items-center">
           <Link href="/">
             <div className="flex items-center gap-2">
-              <MapPin className="h-6 w-6 " />
-              <h1 className="text-2xl font-bold ">ExpeditionZ</h1>
+              <PlaneIcon className="h-6 w-6 " />
+              <h1 className="text-2xl font-bold ">All Trips</h1>
             </div>
           </Link>
           <Link href="/trips/new">
