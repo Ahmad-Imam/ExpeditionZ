@@ -20,6 +20,10 @@ export default function ExpenseTab({ trip }) {
     return trip?.members.find((m) => m.id === id);
   };
 
+  const filteredExpenses = trip?.expenses?.sort(
+    (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+  );
+
   return (
     <div>
       {trip?.expenses.length === 0 ? (
@@ -35,7 +39,7 @@ export default function ExpenseTab({ trip }) {
         </div>
       ) : (
         <div className="space-y-8">
-          {trip?.expenses.map((expense) => {
+          {filteredExpenses.map((expense) => {
             const paidBy = getMemberById(expense.paidById);
             const splitWithMembers = expense?.expenseMembers
               .map((id) => getMemberById(id?.memberId)?.name)

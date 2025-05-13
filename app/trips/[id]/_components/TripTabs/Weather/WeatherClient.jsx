@@ -1,17 +1,22 @@
 "use client";
-import { TabsContent } from "@/components/ui/tabs";
+
 import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useAutumn, useCustomer } from "autumn-js/next";
+import { TabsContent } from "@/components/ui/tabs";
 import WeatherCurrent from "./WeatherCurrent";
 import WeatherForecast from "./WeatherForecast";
-import { formatDate, formatWeatherName, getWeatherIcon } from "@/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Loading from "./loading";
 import WeatherTrip from "./WeatherTrip";
-
+import { formatDate } from "@/lib/utils";
 export default function WeatherClient({ trip }) {
   const [loading, setLoading] = useState(false);
 
   const [weatherData, setWeatherData] = useState(null);
+
+  // const { attach, check, track } = useAutumn();
+  // const { customer, error } = useCustomer();
+
+  // const [proUser, setProUser] = useState(false);
 
   useEffect(() => {
     const fetchWeatherData = async (trip) => {
@@ -42,9 +47,39 @@ export default function WeatherClient({ trip }) {
     fetchWeatherData(newTrip);
   }, []);
 
-  if (loading || !weatherData) {
-    return <Loading />;
-  }
+  // useEffect(() => {
+  //   async function checkProUser(customer) {
+  //     if (!customer) return;
+  //     const { data } = await check({ featureId: "weather-update" });
+  //     console.log("Check pro user:", data);
+  //     if (data.allowed) {
+  //       setProUser(true);
+  //     } else {
+  //       setProUser(false);
+  //     }
+  //   }
+
+  //   checkProUser(customer);
+  // }, [customer]);
+
+  // if (loading || !weatherData) {
+  //   return <Loading />;
+  // }
+
+  // async function handleClickPro() {
+  //   attach({ productId: "weather" });
+  // }
+
+  // async function handleClickFeature() {
+  //   let { data } = await check({ featureId: "weather-update" });
+  //   console.log(data.allowed);
+
+  //   if (data.allowed) {
+  //     await track({ featureId: "weather-update" });
+  //   } else {
+  //     alert("No access");
+  //   }
+  // }
 
   return (
     <div>
@@ -72,6 +107,9 @@ export default function WeatherClient({ trip }) {
 
         <WeatherTrip weatherData={weatherData} />
       </TabsContent>
+
+      {/* <Button onClick={handleClickPro}>Upgrade to Pro</Button>
+      <Button onClick={handleClickFeature}>Test</Button> */}
     </div>
   );
 }

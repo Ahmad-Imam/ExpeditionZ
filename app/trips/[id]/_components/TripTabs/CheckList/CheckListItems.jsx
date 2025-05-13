@@ -36,13 +36,13 @@ export default function CheckListItems({ trip }) {
   };
   const [filter, setFilter] = useState("all");
   const filteredItems = trip.checklist
-    .filter((item) => {
+    ?.filter((item) => {
       if (filter === "all") return true;
       if (filter === "completed") return item.completed;
       if (filter === "pending") return !item.completed;
       return item.category === filter;
     })
-    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    ?.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
   const [loading, setLoading] = useState(false);
 

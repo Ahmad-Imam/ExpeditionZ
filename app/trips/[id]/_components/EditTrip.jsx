@@ -262,7 +262,7 @@ export default function EditTripDialog({ initialData }) {
                                         [idx]: [],
                                       }));
                                     }}
-                                    className="p-4 cursor-pointer bg-accent rounded-md border-2 border-accent-foreground "
+                                    className="p-4 cursor-pointer bg-background rounded-md border-2 border-accent-foreground hover:bg-accent hover:border-accent/80 "
                                   >
                                     {u.name} ({u.email})
                                   </li>

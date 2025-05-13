@@ -63,6 +63,10 @@ export default function LocationClient({ trip }) {
     }
   }
 
+  const filetedLocations = trip?.locations?.sort(
+    (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+  );
+
   return (
     <div className="flex flex-col justify-between gap-6 ">
       <div className="flex justify-end">
@@ -95,7 +99,7 @@ export default function LocationClient({ trip }) {
               </CardContent>
             </Card>
           ) : (
-            trip.locations.map((location) => (
+            filetedLocations.map((location) => (
               <Card
                 key={location.id}
                 onClick={() => setSelectedLocation(location)}

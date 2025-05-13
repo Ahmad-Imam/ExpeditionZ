@@ -42,10 +42,10 @@ export default function TripCard({ trip }) {
               {trip?.members.slice(0, 3).map((member, i) => (
                 <div
                   key={i}
-                  className="h-8 w-8 rounded-full bg-purple-200 flex items-center justify-center border-2 border-white"
+                  className="h-8 w-8 rounded-full bg-accent flex items-center justify-center border-2 border-muted-foreground"
                   title={member.name}
                 >
-                  <span className="text-xs font-medium text-purple-800">
+                  <span className="text-xs font-medium ">
                     {member.name
                       .split(" ")
                       .map((n) => n[0])
@@ -54,8 +54,8 @@ export default function TripCard({ trip }) {
                 </div>
               ))}
               {trip?.members.length > 3 && (
-                <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center border-2 border-white">
-                  <span className="text-xs font-medium text-purple-800">
+                <div className="h-8 w-8 rounded-full bg-accent flex items-center justify-center border-2 border-muted-foreground">
+                  <span className="text-xs font-medium ">
                     +{trip?.members.length - 3}
                   </span>
                 </div>

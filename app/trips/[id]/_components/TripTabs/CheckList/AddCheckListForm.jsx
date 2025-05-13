@@ -119,6 +119,7 @@ export default function AddCheckListForm({ trip, categories }) {
                           <SelectItem
                             key={category.value}
                             value={category.value}
+                            className={"hover:bg-accent cursor-pointer"}
                           >
                             {category.label}
                           </SelectItem>
@@ -146,7 +147,11 @@ export default function AddCheckListForm({ trip, categories }) {
                       <SelectContent>
                         <SelectItem value="unassigned">Unassigned</SelectItem>
                         {trip?.members.map((member) => (
-                          <SelectItem key={member.id} value={member.id}>
+                          <SelectItem
+                            key={member.id}
+                            value={member.id}
+                            className={"hover:bg-accent cursor-pointer"}
+                          >
                             {member.name}
                           </SelectItem>
                         ))}

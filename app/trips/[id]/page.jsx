@@ -5,12 +5,13 @@ import {
   Cloud,
   DollarSign,
   Globe,
+  Image,
   Map,
   Vote,
 } from "lucide-react";
 
 import { getTripById } from "@/actions/trip";
-import { mockTrips } from "@/lib/mock-data";
+
 import TripHeader from "./_components/TripHeader";
 import Checklist from "./_components/TripTabs/CheckList/Checklist";
 import LocationInfo from "./_components/TripTabs/Info/InfoLocation";
@@ -21,18 +22,12 @@ import Timeline from "./_components/TripTabs/Timeline/Timeline";
 import Weather from "./_components/TripTabs/Weather/Weather";
 import PollSystem from "./_components/TripTabs/Polls/PollSystem";
 
+import TripImage from "./_components/TripTabs/Image/TripImage";
+
 export default async function TripDetailPage({ params }) {
   const { id: tripId } = await params;
 
   const trip = await getTripById(tripId);
-  // console.log(trip);
-  // const trip = mockTrips[0];
-  const trips = mockTrips[0];
-  const tripss = await getTripById(tripId);
-
-  // const generatedContents = await generateTripWeather(trip);
-
-  // console.log(trip);
 
   return (
     <div className="min-h-screen sm:w-xl md:2xl lg:w-4xl xl:w-3/4 mx-auto ">
@@ -40,7 +35,7 @@ export default async function TripDetailPage({ params }) {
         <TripHeader trip={trip} />
 
         <Tabs defaultValue="expenses" className="w-full">
-          <TabsList className="grid grid-cols-7 mb-8 w-full">
+          <TabsList className="grid grid-cols-8 mb-8 w-full">
             <TabsTrigger value="expenses" className="flex items-center gap-2">
               <DollarSign className="h-4 w-4" />
               <span className="hidden lg:inline">Expenses</span>
@@ -68,6 +63,11 @@ export default async function TripDetailPage({ params }) {
             <TabsTrigger value="info" className="flex items-center gap-2">
               <Globe className="h-4 w-4" />
               <span className="hidden lg:inline">Info</span>
+            </TabsTrigger>
+
+            <TabsTrigger value="file" className="flex items-center gap-2">
+              <Image className="h-4 w-4" />
+              <span className="hidden lg:inline">Gallery</span>
             </TabsTrigger>
           </TabsList>
 
@@ -97,6 +97,10 @@ export default async function TripDetailPage({ params }) {
 
           <TabsContent value="info">
             <LocationInfo trip={trip} />
+          </TabsContent>
+
+          <TabsContent value="file">
+            <TripImage trip={trip} />
           </TabsContent>
         </Tabs>
       </main>

@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { mockTrips } from "@/lib/mock-data";
-import { Search } from "lucide-react";
+
+import { Plane, Search } from "lucide-react";
 import { useState } from "react";
 import TripCard from "./TripCard";
 
@@ -10,10 +10,9 @@ import { MapPin, Plus } from "lucide-react";
 import Link from "next/link";
 
 export default function TripsList({ allTrips }) {
-  const [trips, setTrips] = useState(mockTrips);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredTrips = trips.filter(
+  const filteredTrips = allTrips.filter(
     (trip) =>
       trip.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       trip.destination.toLowerCase().includes(searchQuery.toLowerCase())
@@ -36,11 +35,11 @@ export default function TripsList({ allTrips }) {
 
         {filteredTrips.length === 0 ? (
           <div className="text-center py-12">
-            <div className="bg-purple-100 inline-block p-4 rounded-full mb-4">
-              <MapPin className="h-8 w-8 text-purple-600" />
+            <div className="bg-accent inline-block p-4 rounded-full mb-4">
+              <Plane className="h-8 w-8 " />
             </div>
             <h3 className="text-xl font-semibold mb-2">No trips found</h3>
-            <p className="text-gray-600 mb-6">
+            <p className=" mb-6">
               {searchQuery
                 ? "Try a different search term"
                 : "Start planning your first adventure"}
@@ -55,9 +54,6 @@ export default function TripsList({ allTrips }) {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTrips.map((trip) => (
-              <TripCard key={trip.id} trip={trip} />
-            ))}
-            {allTrips.map((trip) => (
               <TripCard key={trip.id} trip={trip} />
             ))}
           </div>

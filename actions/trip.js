@@ -126,7 +126,6 @@ export async function updateTripAction(data) {
   return trip;
 }
 
-//get all trips for logged user
 export async function getTrips() {
   const loggedUser = await getLoggedUser();
   if (!loggedUser) throw new Error("Unauthorized");

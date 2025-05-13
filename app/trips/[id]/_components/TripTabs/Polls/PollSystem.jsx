@@ -33,6 +33,10 @@ export default async function PollSystem({ trip }) {
     );
   };
 
+  const filteredPolls = trip?.polls?.sort(
+    (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -54,7 +58,7 @@ export default async function PollSystem({ trip }) {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {trip.polls.map((poll) => {
+          {filteredPolls.map((poll) => {
             const totalVotes = poll.options?.reduce(
               (sum, option) => sum + option.votes.length,
               0

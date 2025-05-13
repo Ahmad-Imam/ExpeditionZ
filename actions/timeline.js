@@ -3,10 +3,12 @@
 import { db } from "@/lib/prisma";
 import { getLoggedUser } from "./user";
 import { revalidatePath } from "next/cache";
+import { getLoggedTripMember } from "./trip";
 
 export async function createTimelinePointAction(data) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("User not logged in");
+  const loggedTripMember = await getLoggedTripMember(data?.tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   const { tripId, date } = data;
 
@@ -24,8 +26,9 @@ export async function createTimelinePointAction(data) {
 }
 
 export async function updateTimelinePointAction(data) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("User not logged in");
+  const loggedTripMember = await getLoggedTripMember(data?.tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   const { tripId, id } = data;
 
@@ -47,8 +50,9 @@ export async function updateTimelinePointAction(data) {
 }
 
 export async function deleteTimelinePointAction(data) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("User not logged in");
+  const loggedTripMember = await getLoggedTripMember(data?.tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   const { tripId, id } = data;
 
@@ -66,8 +70,9 @@ export async function deleteTimelinePointAction(data) {
 }
 
 export async function toggleTimelinePointAction({ data, newVal }) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("User not logged in");
+  const loggedTripMember = await getLoggedTripMember(data?.tripId);
+  if (!loggedTripMember)
+    throw new Error("Unauthorized. You need to be a member of this trip.");
 
   const { tripId, id } = data;
 

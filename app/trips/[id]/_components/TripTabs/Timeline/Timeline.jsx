@@ -9,7 +9,7 @@ import DeleteTimelinePoint from "./DeleteTimelinePoint";
 import ToggleTimelinePoint from "./ToggleTimelinePoint";
 
 export default function Timeline({ trip }) {
-  const timelinePointsByCreatedDate = trip.timeline.sort((a, b) => {
+  const timelinePointsByCreatedDate = trip.timeline?.sort((a, b) => {
     const dateA = new Date(a.createdAt);
     const dateB = new Date(b.createdAt);
     return dateA - dateB; // Sort in ascending order
