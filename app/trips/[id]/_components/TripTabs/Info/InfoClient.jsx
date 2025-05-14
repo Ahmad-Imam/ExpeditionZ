@@ -4,12 +4,11 @@ import InfoHeader from "./InfoHeader";
 import InfoTabs from "./InfoTabs";
 import Loading from "@/app/loading";
 
-export default function InfoClient({ destinationData, trip }) {
+export default function InfoClient({ trip }) {
   const [loading, setLoading] = useState(false);
 
   const [locationData, setLocationData] = useState(null);
 
-  console.log("info client");
   useEffect(() => {
     const fetchLocationInfo = async (trip) => {
       try {
@@ -23,7 +22,7 @@ export default function InfoClient({ destinationData, trip }) {
           body: JSON.stringify({ trip }),
         });
         const data = await response.json();
-        console.log("Location data:", data);
+
         setLocationData(data);
       } catch (error) {
         console.error("Error fetching weather data:", error);

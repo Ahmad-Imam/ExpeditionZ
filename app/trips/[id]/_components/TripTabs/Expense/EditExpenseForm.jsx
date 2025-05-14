@@ -51,7 +51,7 @@ export default function EditExpenseForm({ trip, expense }) {
       paidBy: expense.paidById,
       splitWith: expense.expenseMembers.map((em) => em.memberId),
       category: expense.category,
-      date: new Date(expense?.date).toISOString().slice(0, 10), // Format date to YYYY-MM-DD
+      date: new Date(expense?.date).toISOString().slice(0, 10),
     },
   });
 
@@ -62,7 +62,7 @@ export default function EditExpenseForm({ trip, expense }) {
       date: data.date,
 
       tripId: trip.id,
-      id: expense.id, // Include the expense ID for updating
+      id: expense.id,
     };
 
     const result = await updateExpenseFn(updatedExpense);

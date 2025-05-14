@@ -62,7 +62,6 @@ export async function generateTripWeather(trip) {
   const response = result?.response;
   const text = response?.text();
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-  // console.log(cleanedText);
 
   return JSON?.parse(cleanedText);
 }
@@ -126,7 +125,7 @@ export async function generateTripLocationInfo(trip) {
   const response = result?.response;
   const text = response?.text();
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-  // console.log(cleanedText);
+
   const finalText = cleanedText.replace(/,\s*([}\]])/g, "$1");
 
   try {

@@ -5,9 +5,7 @@ import { Loader, UploadCloud, X } from "lucide-react";
 import { deleteImageFromTrip } from "@/actions/image";
 import { Button } from "@/components/ui/button";
 
-export default function TripImageSingle({ imageObj, trip }) {
-  console.log(imageObj);
-
+export default function TripImageSingle({ imageObj, trip, loggedMember }) {
   const [loading, setLoading] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
@@ -35,7 +33,6 @@ export default function TripImageSingle({ imageObj, trip }) {
       });
 
       const result = await response.json();
-      console.log("File deleted successfully:", result);
     } catch (error) {
       console.error("Error deleting file:", error);
     } finally {
@@ -55,7 +52,7 @@ export default function TripImageSingle({ imageObj, trip }) {
 
   return (
     <div className="aspect-square w-full">
-      <div className="relative w-full h-full bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden group">
+      <div className="relative w-full h-full rounded-lg flex items-center justify-center overflow-hidden group">
         <Image
           src={imageObj?.thumbnailUrl}
           alt="Selected preview"
@@ -66,20 +63,22 @@ export default function TripImageSingle({ imageObj, trip }) {
           onClick={openLightbox}
         />
 
-        <div className="absolute top-2 right-2 flex flex-col space-y-1.5 z-10">
-          {loading ? (
-            <Loader className="animate-spin text-gray-500" size={20} />
-          ) : (
-            <Button
-              variant=""
-              size="sm"
-              onClick={(e) => handleRemoveImage(e, imageObj?.fileId)}
-              aria-label="Delete image"
-            >
-              <X size={16} />
-            </Button>
-          )}
-        </div>
+        {loggedMember && (
+          <div className="absolute top-2 right-2 flex flex-col space-y-1.5 z-10">
+            {loading ? (
+              <Loader className="animate-spin " size={20} />
+            ) : (
+              <Button
+                variant=""
+                size="sm"
+                onClick={(e) => handleRemoveImage(e, imageObj?.fileId)}
+                aria-label="Delete image"
+              >
+                <X size={16} />
+              </Button>
+            )}
+          </div>
+        )}
       </div>
 
       {isLightboxOpen && (

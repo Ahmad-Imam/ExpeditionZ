@@ -1,21 +1,28 @@
+import { ImagePlay } from "lucide-react";
 import TripImageSingle from "./TripImageSingle";
 
-// Placeholder image URLs - replace with your actual image data
-const imageUrl = `https://random-image-pepebigotes.vercel.app/api/random-image`;
-
-const placeholderImages = Array.from({ length: 10 });
-
-export default function TripImageList({ trip }) {
+export default function TripImageList({ trip, loggedMember }) {
   return (
     <>
       {trip?.images?.length == 0 ? (
-        <div className="flex justify-center items-center h-full pt-20">
-          <p className="text-xl font-semibold">No images available</p>
+        <div className="text-center py-12  rounded-lg border">
+          <div className=" inline-block p-4 rounded-full mb-4">
+            <ImagePlay className="h-8 w-8 " />
+          </div>
+          <h3 className="text-xl font-semibold mb-2">No images uploaded yet</h3>
+          <p className=" mb-6">
+            Add images to your trip to share with your group
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {trip?.images.map((imageObj, index) => (
-            <TripImageSingle key={index} trip={trip} imageObj={imageObj} />
+            <TripImageSingle
+              key={index}
+              trip={trip}
+              imageObj={imageObj}
+              loggedMember={loggedMember}
+            />
           ))}
         </div>
       )}

@@ -98,8 +98,6 @@ export default function EditTripDialog({ initialData }) {
     };
 
     try {
-      console.log("payload");
-      console.log(payload);
       await updateTripsFn(payload);
 
       setOpen(false);
@@ -111,7 +109,6 @@ export default function EditTripDialog({ initialData }) {
   useEffect(() => {
     if (tripsUpdated && !tripsLoading) {
       toast.success("Trip updated successfully!");
-      // router.push("/job/" + createTripData?.id);
     }
   }, [tripsUpdated, tripsLoading]);
 

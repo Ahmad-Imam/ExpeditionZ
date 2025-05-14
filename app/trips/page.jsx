@@ -7,7 +7,6 @@ import TripsList from "./_components/TripsList";
 
 export default async function TripsPage() {
   const allTrips = await getTrips();
-  // console.log(allTrips);
 
   return (
     <div className="min-h-screen sm:w-xl md:2xl lg:w-4xl xl:w-3/4 mx-auto">

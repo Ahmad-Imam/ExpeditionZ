@@ -56,16 +56,15 @@ export default function EditCheckListForm({ trip, categories, checklistItem }) {
       tripId: trip.id,
       assignedTo: data.assignedTo === "unassigned" ? null : data.assignedTo,
     };
-    console.log(updatedData);
+
     await updateCheckListItemFn(updatedData);
     reset();
   }
 
   useEffect(() => {
     if (updatedCheckList && !isUpdatingCheckListItem) {
-      console.log("Checklist item updated:", updatedCheckList);
       toast.success("Checklist item updated successfully!");
-      setIsEditingItem(false); // Close the dialog
+      setIsEditingItem(false);
     }
     if (updateCheckListError) {
       console.error("Error updating checklist item:", updateCheckListError);

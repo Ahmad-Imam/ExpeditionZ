@@ -56,8 +56,6 @@ export default function AddLocation({ trip }) {
   ];
 
   const onSubmit = async (data) => {
-    // Add your logic to handle adding a location here
-    console.log("Location added:", data);
     const newData = {
       ...data,
       tripId: trip.id,
@@ -66,11 +64,7 @@ export default function AddLocation({ trip }) {
   };
 
   useEffect(() => {
-    console.log("Location data:", locationData);
-    console.log("Location error:", locationError);
-    console.log("Location loading:", locationLoading);
     if (locationData && !locationLoading) {
-      console.log("Location added successfully:", locationData);
       toast.success("Location added successfully!");
       setIsAddingLocation(false);
       reset();
@@ -80,7 +74,6 @@ export default function AddLocation({ trip }) {
     }
   }, [locationData, locationError, locationLoading]);
 
-  // Called by AddLocationMap when a location is selected
   function handleMapSelect({ address, lng, lat }) {
     setValue("address", address);
     setValue("lng", lng);

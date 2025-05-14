@@ -10,9 +10,6 @@ import { ThemeProvider } from "./providers/theme-provider";
 
 import { AutumnProvider } from "autumn-js/next";
 
-import ProductChangeDialog from "@/components/autumn/product-change-dialog";
-import AutumnPaywall from "@/components/autumn/paywall-dialog";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -21,9 +18,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  // const user = await getLoggedUser();
-  // console.log(user);
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className}  `}>
@@ -32,12 +26,10 @@ export default async function RootLayout({ children }) {
             provider: "clerk",
             useOrg: false,
           }}
-          components={{
-            paywallDialog: AutumnPaywall,
-            productChangeDialog: ProductChangeDialog,
-          }}
-          // customerId="test-user"
-          // customerData={{ name: "Ahmad Imam", email: "ahmadimam71@gmail.com" }}
+          // components={{
+          //   paywallDialog: AutumnPaywall,
+          //   productChangeDialog: ProductChangeDialog,
+          // }}
         >
           <ThemeProvider
             attribute="class"

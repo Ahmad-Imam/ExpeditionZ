@@ -33,6 +33,10 @@ export default async function Header() {
           <Link href="/faq">
             <p>FAQ</p>
           </Link>
+
+          <Link href="/pricing">
+            <p>Pricing</p>
+          </Link>
         </div>
 
         {/* Action Buttons */}

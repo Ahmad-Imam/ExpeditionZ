@@ -46,17 +46,16 @@ export default function EditTimelinePoint({ trip, timelinePoint }) {
   async function onSubmit(data) {
     const updatedData = {
       ...data,
-      id: timelinePoint.id, // Include the timeline point ID for updating
+      id: timelinePoint.id,
       tripId: trip.id,
     };
-    console.log(updatedData);
+
     await updateTimelinePointFn(updatedData);
     setIsEditingPoint(false);
   }
 
   useEffect(() => {
     if (updatedTimelinePoint && !isUpdatingTimelinePoint) {
-      console.log("Timeline point updated:", updatedTimelinePoint);
       toast.success("Timeline point updated successfully!");
       reset();
     }

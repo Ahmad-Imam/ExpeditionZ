@@ -10,8 +10,7 @@ import AddLocation from "./AddLocation";
 import { toast } from "sonner";
 import { deleteLocationAction } from "@/actions/location";
 
-export default function LocationClient({ trip }) {
-  //   console.log(trip?.locations);
+export default function LocationClient({ trip, loggedUser }) {
   const locationCategories = [
     { value: "attraction", label: "Attraction" },
     { value: "restaurant", label: "Restaurant" },
@@ -45,7 +44,6 @@ export default function LocationClient({ trip }) {
   };
 
   const [selectedLocation, setSelectedLocation] = useState(null);
-  console.log(selectedLocation);
 
   const [loading, setLoading] = useState(false);
 
@@ -70,7 +68,7 @@ export default function LocationClient({ trip }) {
   return (
     <div className="flex flex-col justify-between gap-6 ">
       <div className="flex justify-end">
-        <AddLocation trip={trip} />
+        {loggedUser && <AddLocation trip={trip} />}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-[600px] relative">
@@ -78,7 +76,7 @@ export default function LocationClient({ trip }) {
 
         <div className="lg:col-span-2  rounded-lg relative overflow-hidden w-full">
           {trip.locations.length === 0 ? (
-            <div className="text-center p-6">
+            <div className="text-center p-6 border rounded-lg">
               <MapPin className="h-12 w-12  mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No locations added</h3>
               <p className=" mb-4">Add locations to see them on the map</p>
@@ -112,23 +110,25 @@ export default function LocationClient({ trip }) {
                 <CardHeader className="">
                   <div className="flex justify-between">
                     <CardTitle className="text-lg">{location.name}</CardTitle>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteLocation(location.id);
-                        }}
-                        disabled={loading}
-                      >
-                        {loading ? (
-                          <Loader2 className="animate-spin">...</Loader2>
-                        ) : (
-                          <Trash2 className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </div>
+                    {loggedUser && (
+                      <div className="flex gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteLocation(location.id);
+                          }}
+                          disabled={loading}
+                        >
+                          {loading ? (
+                            <Loader2 className="animate-spin">...</Loader2>
+                          ) : (
+                            <Trash2 className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </CardHeader>
                 <CardContent className={""}>

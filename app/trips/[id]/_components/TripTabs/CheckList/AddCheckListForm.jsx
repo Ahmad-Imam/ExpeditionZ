@@ -53,16 +53,15 @@ export default function AddCheckListForm({ trip, categories }) {
     const newData = {
       ...data,
       tripId: trip.id,
-      assignedTo: data.assignedTo === "unassigned" ? null : data.assignedTo, // Convert "unassigned" to null
+      assignedTo: data.assignedTo === "unassigned" ? null : data.assignedTo,
     };
-    console.log(data);
+
     await createCheckListItemFn(newData);
     setIsAddingItem(false);
   }
 
   useEffect(() => {
     if (newCheckList && !isCreatingCheckListItem) {
-      console.log("New checklist item created:", newCheckList);
       toast.success("Checklist item created successfully!");
       reset();
     }

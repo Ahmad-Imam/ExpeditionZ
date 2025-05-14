@@ -3,7 +3,7 @@ import { CheckSquare, Plus } from "lucide-react";
 import AddCheckListForm from "./AddCheckListForm";
 import CheckListItems from "./CheckListItems";
 
-export default function Checklist({ trip }) {
+export default function Checklist({ trip, loggedUser }) {
   const getCompletionStats = () => {
     const total = trip.checklist.length;
     const completed = trip.checklist.filter((item) => item.completed).length;
@@ -34,7 +34,9 @@ export default function Checklist({ trip }) {
           </p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          <AddCheckListForm trip={trip} categories={categories} />
+          {loggedUser && (
+            <AddCheckListForm trip={trip} categories={categories} />
+          )}
         </div>
       </div>
 
@@ -57,10 +59,9 @@ export default function Checklist({ trip }) {
               ? "Start adding items to your checklist"
               : "No items match your current filter"}
           </p>
-          <AddCheckListForm trip={trip} categories={categories} />
         </div>
       ) : (
-        <CheckListItems trip={trip} />
+        <CheckListItems trip={trip} loggedUser={loggedUser} />
       )}
     </div>
   );

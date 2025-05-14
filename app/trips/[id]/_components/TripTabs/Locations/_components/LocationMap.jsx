@@ -93,8 +93,6 @@ export default function LocationMap({ locations = [], selectedLocation }) {
     }
   }, [selectedLocation]);
 
-  // ...existing imports and code...
-
   return (
     <div className="absolute inset-0 w-full">
       <div ref={mapContainerRef} className="w-full h-full" />

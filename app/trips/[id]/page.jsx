@@ -10,11 +10,11 @@ import {
   Vote,
 } from "lucide-react";
 
-import { getTripById } from "@/actions/trip";
+import { getLoggedTripMember, getTripById } from "@/actions/trip";
 
 import TripHeader from "./_components/TripHeader";
 import Checklist from "./_components/TripTabs/CheckList/Checklist";
-import LocationInfo from "./_components/TripTabs/Info/InfoLocation";
+import InfoLocation from "./_components/TripTabs/Info/InfoLocation";
 import Expense from "./_components/TripTabs/Expense/Expense";
 import Locations from "./_components/TripTabs/Locations/Locations";
 
@@ -23,16 +23,19 @@ import Weather from "./_components/TripTabs/Weather/Weather";
 import PollSystem from "./_components/TripTabs/Polls/PollSystem";
 
 import TripImage from "./_components/TripTabs/Image/TripImage";
+import { getLoggedUser } from "@/actions/user";
 
 export default async function TripDetailPage({ params }) {
   const { id: tripId } = await params;
 
   const trip = await getTripById(tripId);
+  const loggedUser = await getLoggedUser();
+  const loggedMember = await getLoggedTripMember(tripId);
 
   return (
     <div className="min-h-screen sm:w-xl md:2xl lg:w-4xl xl:w-3/4 mx-auto ">
       <main className=" mx-auto px-4 py-10">
-        <TripHeader trip={trip} />
+        <TripHeader trip={trip} loggedUser={loggedUser} />
 
         <Tabs defaultValue="expenses" className="w-full">
           <TabsList className="grid grid-cols-8 mb-8 w-full">
@@ -72,35 +75,39 @@ export default async function TripDetailPage({ params }) {
           </TabsList>
 
           <TabsContent value="expenses">
-            <Expense trip={trip} />
+            <Expense trip={trip} loggedUser={loggedMember} />
           </TabsContent>
 
           <TabsContent value="checklist">
-            <Checklist trip={trip} />
+            <Checklist trip={trip} loggedUser={loggedMember} />
           </TabsContent>
 
           <TabsContent value="timeline">
-            <Timeline trip={trip} />
+            <Timeline trip={trip} loggedUser={loggedMember} />
           </TabsContent>
 
           <TabsContent value="locations">
-            <Locations trip={trip} />
+            <Locations trip={trip} loggedUser={loggedMember} />
           </TabsContent>
 
           <TabsContent value="polls">
-            <PollSystem trip={trip} />
+            <PollSystem trip={trip} loggedUser={loggedMember} />
           </TabsContent>
 
           <TabsContent value="weather">
-            <Weather trip={trip} />
+            <Weather trip={trip} loggedUser={loggedUser} />
           </TabsContent>
 
           <TabsContent value="info">
-            <LocationInfo trip={trip} />
+            <InfoLocation trip={trip} loggedUser={loggedUser} />
           </TabsContent>
 
           <TabsContent value="file">
-            <TripImage trip={trip} />
+            <TripImage
+              trip={trip}
+              loggedUser={loggedUser}
+              loggedMember={loggedMember}
+            />
           </TabsContent>
         </Tabs>
       </main>

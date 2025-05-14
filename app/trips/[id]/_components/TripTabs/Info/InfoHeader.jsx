@@ -2,27 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { CalendarClock, Clock, Globe } from "lucide-react";
 export default function InfoHeader({ destinationData, trip }) {
-  //   const [currentTime, setCurrentTime] = useState("");
-
   const daysUntilTrip = destinationData?.countDown;
-
-  //   useEffect(() => {
-  //     // Update local time
-  //     const updateLocalTime = () => {
-  //       const now = new Date();
-  //       const options = {
-  //         hour: "2-digit",
-  //         minute: "2-digit",
-  //         second: "2-digit",
-  //         timeZoneName: "short",
-  //         timeZone: destinationData.timezone,
-  //       };
-  //       setCurrentTime(now.toLocaleTimeString("en-US", options));
-  //     };
-
-  //     // const timer = setInterval(updateLocalTime, 1000);
-  //     // return () => clearInterval(timer);
-  //   }, [trip.startDate, destinationData.timezone]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">

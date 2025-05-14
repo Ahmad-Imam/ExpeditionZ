@@ -47,7 +47,6 @@ export default function AddPoll({ trip }) {
   } = useFetch(createPollAction);
 
   const onSubmit = async (data) => {
-    // Add IDs and votes array to each option before sending to backend
     const poll = {
       ...data,
       options: data.options.map((opt, idx) => ({
@@ -58,7 +57,6 @@ export default function AddPoll({ trip }) {
       tripId: trip.id,
     };
 
-    console.log("Poll added:", poll);
     await addPollFn(poll);
   };
 

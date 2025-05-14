@@ -31,7 +31,7 @@ export async function createExpenseAction(data) {
       expenseMembers: true,
     },
   });
-  console.log("Expense created:", expense);
+
   revalidatePath(`/trips/${tripId}`);
   return expense;
 }
@@ -42,7 +42,6 @@ export async function updateExpenseAction(data) {
   if (!loggedTripMember)
     throw new Error("Unauthorized. You need to be a member of this trip.");
 
-  // ensure expense belongs to this trip
   const existing = await db.expense.findUnique({
     where: { id },
     select: { tripId: true },
@@ -51,20 +50,17 @@ export async function updateExpenseAction(data) {
     throw new Error("Expense not found or access denied");
   }
 
-  // load current expenseMembers
   const existingEM = await db.expenseMember.findMany({
     where: { expenseId: id },
     select: { id: true, memberId: true },
   });
   const existingMemberIds = existingEM.map((em) => em.memberId);
 
-  // compute adds/removes
   const toRemove = existingEM
     .filter((em) => !splitWith.includes(em.memberId))
     .map((em) => em.id);
   const toAdd = splitWith.filter((mid) => !existingMemberIds.includes(mid));
 
-  // perform update
   const expense = await db.expense.update({
     where: { id },
     data: {
@@ -96,14 +92,12 @@ export async function repayExpenseAction({ expenseMember, hasRepaid, tripId }) {
 
   const { expenseId, id } = expenseMember;
 
-  // ensure expense belongs to this trip
   const existing = await db.expense.findUnique({
     where: { id: expenseId },
     select: { tripId: true },
   });
   if (!existing) throw new Error("Expense not found");
 
-  // update expenseMember
   const updated = await db.expenseMember.update({
     where: { id: id },
     data: {
@@ -120,7 +114,6 @@ export async function deleteExpenseAction({ id, tripId }) {
   if (!loggedTripMember)
     throw new Error("Unauthorized. You need to be a member of this trip.");
 
-  // ensure expense belongs to this trip
   const existing = await db.expense.findUnique({
     where: { id },
     select: { tripId: true },

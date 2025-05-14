@@ -8,7 +8,7 @@ import EditTimelinePoint from "./EditTimelinePoint";
 import DeleteTimelinePoint from "./DeleteTimelinePoint";
 import ToggleTimelinePoint from "./ToggleTimelinePoint";
 
-export default function Timeline({ trip }) {
+export default function Timeline({ trip, loggedUser }) {
   const timelinePointsByCreatedDate = trip.timeline?.sort((a, b) => {
     const dateA = new Date(a.createdAt);
     const dateB = new Date(b.createdAt);
@@ -20,7 +20,7 @@ export default function Timeline({ trip }) {
       <div className="flex justify-between items-center">
         <h3 className="text-2xl font-bold ">Trip Timeline</h3>
 
-        <AddTimelinePoint trip={trip} />
+        {loggedUser && <AddTimelinePoint trip={trip} />}
       </div>
 
       {trip.timeline.length === 0 ? (
@@ -32,7 +32,6 @@ export default function Timeline({ trip }) {
           <p className=" mb-6">
             Start adding points to create your trip timeline
           </p>
-          <AddTimelinePoint trip={trip} />
         </div>
       ) : (
         <div className="relative">
@@ -75,11 +74,7 @@ export default function Timeline({ trip }) {
                             isEven ? "justify-end" : "justify-start"
                           } gap-2`}
                         >
-                          <CardTitle
-                            className={point.completed ? "text-gray-500" : ""}
-                          >
-                            {point.title}
-                          </CardTitle>
+                          <CardTitle className={""}>{point.title}</CardTitle>
                         </div>
                       </CardHeader>
                       <CardContent>
@@ -93,31 +88,33 @@ export default function Timeline({ trip }) {
                         </div>
                         {point.description && (
                           <p
-                            className={`text-sm ${
-                              point.completed ? "text-gray-500" : ""
-                            } ${isEven ? "text-right" : "text-left"}`}
+                            className={`text-sm  ${
+                              isEven ? "text-right" : "text-left"
+                            }`}
                           >
                             {point.description}
                           </p>
                         )}
-                        <div
-                          className={`flex mt-3 flex-wrap gap-4 ${
-                            isEven ? "justify-end" : "justify-start"
-                          }gap-4`}
-                        >
-                          <ToggleTimelinePoint
-                            timelinePoint={point}
-                            trip={trip}
-                          />
-                          <EditTimelinePoint
-                            timelinePoint={point}
-                            trip={trip}
-                          />
-                          <DeleteTimelinePoint
-                            timelinePoint={point}
-                            trip={trip}
-                          />
-                        </div>
+                        {loggedUser && (
+                          <div
+                            className={`flex mt-3 flex-wrap gap-4 ${
+                              isEven ? "justify-end" : "justify-start"
+                            }gap-4`}
+                          >
+                            <ToggleTimelinePoint
+                              timelinePoint={point}
+                              trip={trip}
+                            />
+                            <EditTimelinePoint
+                              timelinePoint={point}
+                              trip={trip}
+                            />
+                            <DeleteTimelinePoint
+                              timelinePoint={point}
+                              trip={trip}
+                            />
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   </div>

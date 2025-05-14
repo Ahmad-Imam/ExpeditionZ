@@ -16,7 +16,7 @@ export default function ToggleTimelinePoint({ timelinePoint, trip }) {
         data: { id: timelinePoint?.id, tripId: trip.id },
         newVal: !timelinePoint?.completed,
       });
-      console.log("Timeline point status toggled successfully");
+
       toast.success(
         `Timeline point marked as ${
           timelinePoint?.completed ? "incomplete" : "completed"

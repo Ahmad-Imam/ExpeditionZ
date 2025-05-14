@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Calendar, CheckSquare, DollarSign, MapPin, Vote } from "lucide-react";
+import {
+  Calendar,
+  CheckSquare,
+  DollarSign,
+  Gem,
+  MapPin,
+  Vote,
+} from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -49,15 +56,9 @@ export default function Home() {
             description="Make decisions together with easy voting on trip options"
           />
           <FeatureCard
-            icon={
-              <div className="flex">
-                <div className="h-10 w-10 rounded-full  flex items-center justify-center border-2 ">
-                  <span className=" font-bold">+</span>
-                </div>
-              </div>
-            }
-            title="Collaborative Planning"
-            description="Invite friends and family to contribute to your trip plans"
+            icon={<Gem className="h-10 w-10 " />}
+            title="Premium Features"
+            description="Get destination information, weather forecasts and store your trip photos"
           />
         </section>
       </main>
@@ -68,7 +69,7 @@ export default function Home() {
 function FeatureCard({ icon, title, description }) {
   return (
     <div className=" rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
-      <div className="mb-4">{icon}</div>
+      <div className="mb-4 flex justify-center">{icon}</div>
       <h3 className="text-xl font-semibold  mb-2">{title}</h3>
       <p className="">{description}</p>
     </div>

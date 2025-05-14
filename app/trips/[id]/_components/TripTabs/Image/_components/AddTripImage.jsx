@@ -30,7 +30,6 @@ export default function AddTripImage({ trip }) {
   const [loading, setLoading] = useState(false);
 
   const abortController = new AbortController();
-  //   const [progress, setProgress] = useState(0);
 
   const authenticator = async () => {
     try {
@@ -67,8 +66,6 @@ export default function AddTripImage({ trip }) {
     if (!selectedImage) return;
 
     try {
-      console.log("Uploading image:", selectedImage);
-
       if (!selectedImage.type.includes("image")) {
         alert("Please select a valid image file");
         return;
@@ -85,7 +82,6 @@ export default function AddTripImage({ trip }) {
 
       try {
         const uploadResponse = await upload({
-          // Authentication parameters
           expire,
           token,
           signature,
@@ -99,7 +95,6 @@ export default function AddTripImage({ trip }) {
 
           abortSignal: abortController.signal,
         });
-        console.log("Upload response:", uploadResponse);
 
         const imageObj = {
           url: uploadResponse.url,
@@ -112,7 +107,6 @@ export default function AddTripImage({ trip }) {
           tripId: trip.id,
           imageObj: imageObj,
         });
-        console.log("Image added to trip:", updatedTrip);
       } catch (error) {
         if (error instanceof ImageKitAbortError) {
           console.error("Upload aborted:", error.reason);

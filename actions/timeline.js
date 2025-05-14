@@ -20,7 +20,7 @@ export async function createTimelinePointAction(data) {
       date: new Date(date),
     },
   });
-  console.log("Timeline point created:", timelinePoint);
+
   revalidatePath(`/trips/${tripId}`);
   return timelinePoint;
 }
@@ -44,7 +44,7 @@ export async function updateTimelinePointAction(data) {
       date: new Date(data.date),
     },
   });
-  console.log("Timeline point updated:", timelinePoint);
+
   revalidatePath(`/trips/${tripId}`);
   return timelinePoint;
 }
@@ -64,7 +64,7 @@ export async function deleteTimelinePointAction(data) {
       id,
     },
   });
-  console.log("Timeline point deleted:", timelinePoint);
+
   revalidatePath(`/trips/${tripId}`);
   return timelinePoint;
 }
@@ -87,7 +87,7 @@ export async function toggleTimelinePointAction({ data, newVal }) {
       completed: newVal,
     },
   });
-  console.log("Timeline point completed:", timelinePoint);
+
   revalidatePath(`/trips/${tripId}`);
   return timelinePoint;
 }

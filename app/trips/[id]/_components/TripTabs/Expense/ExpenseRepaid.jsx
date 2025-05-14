@@ -15,14 +15,10 @@ export default function ExpenseRepaid({ expense, expenseMember }) {
     fn: repayExpenseFn,
     loading: repayLoading,
   } = useFetch(repayExpenseAction);
-  //   console.log("expenseMember");
-  //   console.log(expenseMember);
 
   const amountPerPerson = expense?.amount / expense?.expenseMembers.length;
 
   async function handleExpenseRepay(expenseMember) {
-    console.log("repay");
-
     await repayExpenseFn({
       expenseMember,
       hasRepaid: !expenseMember?.hasRepaid,
@@ -44,7 +40,7 @@ export default function ExpenseRepaid({ expense, expenseMember }) {
       <p className="text-md font-medium mb-2">Mark as repaid / pay:</p>
       <div className="flex flex-wrap gap-2">
         {expense?.expenseMembers.map((expenseMember) => {
-          if (expenseMember?.memberId === expense.paidById) return null; // Skip the person who paid
+          if (expenseMember?.memberId === expense.paidById) return null;
 
           return (
             <Button

@@ -30,7 +30,6 @@ export async function createPollAction(data) {
     },
   });
 
-  console.log("Poll created:", poll);
   revalidatePath(`/trips/${tripId}`);
   return poll;
 }
@@ -49,7 +48,6 @@ export async function togglePollAction(poll) {
     data: { isActive: !isActive },
   });
 
-  console.log("Poll updated:", updatedPoll);
   revalidatePath(`/trips/${poll.tripId}`);
   return updatedPoll;
 }
@@ -66,7 +64,6 @@ export async function deletePollAction(poll) {
     where: { id: id },
   });
 
-  console.log("Poll deleted:", deletedPoll);
   revalidatePath(`/trips/${poll.tripId}`);
   return deletedPoll;
 }
@@ -94,7 +91,6 @@ export async function votePollAction(pollId, optionId) {
   });
   if (alreadyVoted) throw new Error("Already voted in this poll");
 
-  // Create the vote
   await db.pollVote.create({
     data: {
       memberId: member.id,
@@ -132,11 +128,6 @@ export async function unvotePollAction(pollId, optionId) {
       optionId,
     },
   });
-
-  // const updatedPoll = await db.poll.findUnique({
-  //   where: { id: pollId },
-  //   include: { options: { include: { votes: true } } },
-  // });
 
   revalidatePath(`/trips/${poll.tripId}`);
   return deletedPoll;

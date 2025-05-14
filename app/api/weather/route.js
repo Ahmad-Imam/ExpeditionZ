@@ -1,9 +1,7 @@
-//create api route to get weather data from generateWeatherData server action by passing trip object as parameter
 import { generateTripWeather } from "@/actions/generate";
 import { NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+
 import { getLoggedUser } from "@/actions/user";
-import { db } from "@/lib/prisma";
 
 export async function POST(request) {
   const loggedUser = await getLoggedUser();
@@ -15,8 +13,5 @@ export async function POST(request) {
 
   const weatherData = await generateTripWeather(trip);
 
-  //   console.log("Weather data generated:", weatherData);
-
-  //   revalidatePath(`/trips/${tripId}`);
   return NextResponse.json(weatherData);
 }

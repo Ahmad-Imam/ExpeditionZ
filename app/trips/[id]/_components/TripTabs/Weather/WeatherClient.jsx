@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useAutumn, useCustomer } from "autumn-js/next";
+
 import { TabsContent } from "@/components/ui/tabs";
 import WeatherCurrent from "./WeatherCurrent";
 import WeatherForecast from "./WeatherForecast";
@@ -12,11 +11,6 @@ export default function WeatherClient({ trip }) {
   const [loading, setLoading] = useState(false);
 
   const [weatherData, setWeatherData] = useState(null);
-
-  // const { attach, check, track } = useAutumn();
-  // const { customer, error } = useCustomer();
-
-  // const [proUser, setProUser] = useState(false);
 
   useEffect(() => {
     const fetchWeatherData = async (trip) => {
@@ -31,7 +25,7 @@ export default function WeatherClient({ trip }) {
           body: JSON.stringify({ trip }),
         });
         const data = await response.json();
-        console.log("Weather data:", data);
+
         setWeatherData(data);
       } catch (error) {
         console.error("Error fetching weather data:", error);
@@ -46,40 +40,6 @@ export default function WeatherClient({ trip }) {
 
     fetchWeatherData(newTrip);
   }, []);
-
-  // useEffect(() => {
-  //   async function checkProUser(customer) {
-  //     if (!customer) return;
-  //     const { data } = await check({ featureId: "weather-update" });
-  //     console.log("Check pro user:", data);
-  //     if (data.allowed) {
-  //       setProUser(true);
-  //     } else {
-  //       setProUser(false);
-  //     }
-  //   }
-
-  //   checkProUser(customer);
-  // }, [customer]);
-
-  // if (loading || !weatherData) {
-  //   return <Loading />;
-  // }
-
-  // async function handleClickPro() {
-  //   attach({ productId: "weather" });
-  // }
-
-  // async function handleClickFeature() {
-  //   let { data } = await check({ featureId: "weather-update" });
-  //   console.log(data.allowed);
-
-  //   if (data.allowed) {
-  //     await track({ featureId: "weather-update" });
-  //   } else {
-  //     alert("No access");
-  //   }
-  // }
 
   return (
     <div>
@@ -105,11 +65,14 @@ export default function WeatherClient({ trip }) {
           </p>
         </div>
 
-        <WeatherTrip weatherData={weatherData} />
+        {loading ? (
+          <div>
+            <p className="text-sm text-gray-500">Loading...</p>
+          </div>
+        ) : (
+          <WeatherTrip weatherData={weatherData} />
+        )}
       </TabsContent>
-
-      {/* <Button onClick={handleClickPro}>Upgrade to Pro</Button>
-      <Button onClick={handleClickFeature}>Test</Button> */}
     </div>
   );
 }

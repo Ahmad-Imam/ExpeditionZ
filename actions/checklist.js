@@ -1,7 +1,5 @@
 "use server";
 
-//action to create a checklist item
-
 import { db } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -24,7 +22,7 @@ export async function createCheckListItemAction(data) {
       assignedToId: assignedTo,
     },
   });
-  console.log("Checklist item created:", checklistItem);
+
   revalidatePath(`/trips/${tripId}`);
   return checklistItem;
 }
@@ -47,7 +45,7 @@ export async function editCheckListItemAction(data) {
       completed,
     },
   });
-  console.log("Checklist item updated:", checklistItem);
+
   revalidatePath(`/trips/${checklistItem.tripId}`);
   return checklistItem;
 }

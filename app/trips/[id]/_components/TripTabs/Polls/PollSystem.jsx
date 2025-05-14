@@ -15,7 +15,7 @@ import VotePoll from "./VotePoll";
 import { getLoggedUser } from "@/actions/user";
 import { getLoggedTripMember } from "@/actions/trip";
 
-export default async function PollSystem({ trip }) {
+export default async function PollSystem({ trip, loggedUser }) {
   const loggedMember = await getLoggedTripMember(trip.id);
 
   const getWinningOption = (poll) => {
@@ -27,7 +27,6 @@ export default async function PollSystem({ trip }) {
   };
 
   const getUserVote = (poll) => {
-    // console.log(loggedMember);
     return poll.options.find((option) =>
       option.votes.some((vote) => vote.memberId === loggedMember?.id)
     );
@@ -42,7 +41,7 @@ export default async function PollSystem({ trip }) {
       <div className="flex justify-between items-center">
         <h3 className="text-2xl font-bold ">Group Polls</h3>
 
-        <AddPoll trip={trip} />
+        {loggedUser && <AddPoll trip={trip} />}
       </div>
 
       {trip.polls?.length === 0 ? (
@@ -51,10 +50,9 @@ export default async function PollSystem({ trip }) {
             <Vote className="h-8 w-8 " />
           </div>
           <h3 className="text-xl font-semibold mb-2">No polls created yet</h3>
-          <p className="text-gray-600 mb-6">
+          <p className=" mb-6">
             Create polls to help your group make decisions
           </p>
-          <AddPoll trip={trip} />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -69,27 +67,26 @@ export default async function PollSystem({ trip }) {
             return (
               <Card
                 key={poll.id}
-                className={!poll.isActive ? "opacity-70" : ""}
+                className={!poll.isActive ? "opacity-90" : ""}
               >
                 <CardHeader className="pb-2">
                   <div className="flex justify-between">
                     <CardTitle className="text-lg">{poll.question}</CardTitle>
-                    <div className="flex justify-between items-center gap-2">
-                      <TogglePoll poll={poll} />
-                      <DeletePoll poll={poll} />
-                    </div>
-                  </div>
-                  <div className="text-md text-gray-600 flex items-center gap-2">
-                    {poll.isActive ? (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                        Active
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                        Closed
-                      </span>
+                    {loggedUser && (
+                      <div className="flex justify-between items-center gap-2">
+                        <TogglePoll poll={poll} />
+                        <DeletePoll poll={poll} />
+                      </div>
                     )}
-                    <span>{totalVotes} votes</span>
+                  </div>
+                  <div className="text-md  flex items-center gap-2">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-accent">
+                      {poll.isActive ? "Active" : "Closed"}
+                    </span>
+
+                    <span className="text-accent font-bold">
+                      {totalVotes} votes
+                    </span>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -118,8 +115,8 @@ export default async function PollSystem({ trip }) {
                                 {option.text}
                               </span>
                               {isWinning && (
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-md font-bold  text-purple-800">
-                                  Winner
+                                <span className="inline-flex items-center px-2 py-1 rounded-full text-md font-bold  ">
+                                  (Winner)
                                 </span>
                               )}
                               {isUserVote && poll.isActive && (
@@ -140,7 +137,7 @@ export default async function PollSystem({ trip }) {
                               style={{ width: `${percentage}%` }}
                             ></div>
                           </div>
-                          <div className="text-sm text-gray-500">
+                          <div className="text-md ">
                             {option.votes.length} vote
                             {option.votes.length !== 1 ? "s" : ""}
                           </div>

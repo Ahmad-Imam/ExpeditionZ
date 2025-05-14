@@ -2,7 +2,7 @@ import { formatDate } from "@/lib/utils";
 import { Calendar, MapPin, Users } from "lucide-react";
 import EditTripDialog from "./EditTrip";
 
-export default function TripHeader({ trip }) {
+export default function TripHeader({ trip, loggedUser }) {
   const startDate = formatDate(trip?.startDate);
   const endDate = formatDate(trip?.endDate);
 
@@ -28,7 +28,7 @@ export default function TripHeader({ trip }) {
           <p className="mt-4 2xl:text-2xl">{trip.description}</p>
         )}
       </div>
-      <EditTripDialog initialData={trip} />
+      {loggedUser && <EditTripDialog initialData={trip} />}
     </div>
   );
 }

@@ -48,15 +48,12 @@ export default function AddTimelinePoint({ trip }) {
       ...data,
       tripId: trip.id,
     };
-    console.log(newData);
 
-    // await createTimelinePointFn(newData);
     setIsAddingPoint(false);
   }
 
   useEffect(() => {
     if (newTimelinePoint && !isCreatingTimelinePoint) {
-      console.log("New timeline point created:", newTimelinePoint);
       toast.success("Timeline point created successfully!");
       reset();
     }

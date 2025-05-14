@@ -76,13 +76,11 @@ export default function AddExpenseForm({ trip }) {
     });
   };
   useEffect(() => {
-    console.log("Expense data: effect");
     if (addExpenseError)
       toast.error("Error adding expense: " + addExpenseError.message);
     if (expenseData && !isAddingExpenseLoading) {
       toast.success("Expense created successfully!");
       setIsAddingExpense(false);
-      // router.push("/job/" + createTripData?.id);
     }
   }, [expenseData, isAddingExpenseLoading, addExpenseError]);
 

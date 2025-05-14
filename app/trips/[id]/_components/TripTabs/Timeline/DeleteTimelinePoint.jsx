@@ -10,13 +10,13 @@ export default function DeleteTimelinePoint({ timelinePoint, trip }) {
 
   async function handleDeleteTimelinePoint(timelinePoint) {
     setLoading(true);
-    console.log("Delete timeline point with ID:", timelinePoint?.id);
+
     try {
       await deleteTimelinePointAction({
         id: timelinePoint?.id,
         tripId: trip.id,
       });
-      console.log("Timeline point deleted successfully");
+
       toast.success("Timeline point deleted successfully");
     } catch (error) {
       console.error("Error deleting timeline point:", error);

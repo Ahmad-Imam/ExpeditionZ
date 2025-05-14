@@ -11,10 +11,10 @@ export default function DeleteExpense({ expense, trip }) {
 
   async function handleDeleteExpense(expense) {
     setLoading(true);
-    console.log("Delete expense with ID:");
+
     try {
       await deleteExpenseAction({ id: expense?.id, tripId: trip.id });
-      console.log("Expense deleted successfully");
+
       toast.success("Expense deleted successfully");
     } catch (error) {
       console.error("Error deleting expense:", error);

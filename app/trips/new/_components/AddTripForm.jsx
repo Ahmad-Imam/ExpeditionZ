@@ -45,7 +45,6 @@ export default function AddTripForm() {
     name: "members",
   });
 
-  // useFetch for creating trip
   const {
     fn: createTripFn,
     loading: createTripLoading,
@@ -93,14 +92,14 @@ export default function AddTripForm() {
       locations: [],
       polls: [],
     };
-    console.log("payload", payload);
-    const result = await createTripFn(payload);
+
+    await createTripFn(payload);
   };
 
   useEffect(() => {
     if (createTripData && !createTripLoading) {
       toast.success("Trip created successfully!");
-      // router.push("/job/" + createTripData?.id);
+      router.push("/trips/" + createTripData?.id);
     }
   }, [createTripData, createTripLoading]);
 
@@ -168,7 +167,7 @@ export default function AddTripForm() {
 
           <div className="flex flex-col gap-6">
             <div className="flex justify-between items-center mb-2">
-              <Label>Members</Label>
+              <Label className={"text-md"}>Members</Label>
               <Button
                 type="button"
                 variant="outline"
@@ -279,7 +278,7 @@ export default function AddTripForm() {
           </div>
         </CardContent>
 
-        <CardFooter>
+        <CardFooter className={"flex justify-end py-6"}>
           <Button type="submit" disabled={createTripLoading}>
             {createTripLoading ? "Creating..." : "Create Trip"}
           </Button>

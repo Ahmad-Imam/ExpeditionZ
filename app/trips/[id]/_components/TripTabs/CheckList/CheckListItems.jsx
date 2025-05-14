@@ -21,7 +21,7 @@ import {
 } from "@/actions/checklist";
 import { toast } from "sonner";
 
-export default function CheckListItems({ trip }) {
+export default function CheckListItems({ trip, loggedUser }) {
   const categories = [
     { value: "essentials", label: "Essentials" },
     { value: "clothing", label: "Clothing" },
@@ -63,8 +63,7 @@ export default function CheckListItems({ trip }) {
     try {
       setLoading(true);
       await toggleCheckListItemAction(item?.id, val, trip.id);
-      console.log(val);
-      console.log(item);
+
       toast.success("Item updated successfully");
     } catch (error) {
       console.error("Error updating item:", error);
@@ -102,12 +101,14 @@ export default function CheckListItems({ trip }) {
             <Card key={item.id} className={item.completed ? "opacity-70" : ""}>
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-start gap-3">
-                  <Checkbox
-                    id={`item-${item.id}`}
-                    checked={item.completed}
-                    onCheckedChange={(val) => toggleItemCompletion(item, val)}
-                    className="mt-1 cursor-pointer"
-                  />
+                  {loggedUser && (
+                    <Checkbox
+                      id={`item-${item.id}`}
+                      checked={item.completed}
+                      onCheckedChange={(val) => toggleItemCompletion(item, val)}
+                      className="mt-1 cursor-pointer"
+                    />
+                  )}
                   <div>
                     <label
                       htmlFor={`item-${item.id}`}
@@ -129,21 +130,23 @@ export default function CheckListItems({ trip }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-4 pr-4">
-                  <EditCheckListForm
-                    categories={categories}
-                    trip={trip}
-                    checklistItem={item}
-                  />
-                  {loading ? (
-                    <LoaderIcon className="h-5 w-5 animate-spin " />
-                  ) : (
-                    <Trash2
-                      className="h-4 w-4 cursor-pointer "
-                      onClick={() => handleDeleteItem(item)}
+                {loggedUser && (
+                  <div className="flex gap-4 pr-4">
+                    <EditCheckListForm
+                      categories={categories}
+                      trip={trip}
+                      checklistItem={item}
                     />
-                  )}
-                </div>
+                    {loading ? (
+                      <LoaderIcon className="h-5 w-5 animate-spin " />
+                    ) : (
+                      <Trash2
+                        className="h-4 w-4 cursor-pointer "
+                        onClick={() => handleDeleteItem(item)}
+                      />
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
           );

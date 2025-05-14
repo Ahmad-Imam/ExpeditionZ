@@ -13,9 +13,7 @@ import EditExpenseForm from "./EditExpenseForm";
 import ExpenseRepaid from "./ExpenseRepaid";
 import DeleteExpense from "./DeleteExpense";
 
-export default function ExpenseTab({ trip }) {
-  // console.log(trip?.expenses);
-
+export default function ExpenseTab({ trip, loggedUser }) {
   const getMemberById = (id) => {
     return trip?.members.find((m) => m.id === id);
   };
@@ -35,7 +33,6 @@ export default function ExpenseTab({ trip }) {
           <p className=" mb-6">
             Start adding expenses to track your trip spending
           </p>
-          <AddExpenseForm trip={trip} />
         </div>
       ) : (
         <div className="space-y-8">
@@ -52,10 +49,12 @@ export default function ExpenseTab({ trip }) {
                   <div className="flex justify-between">
                     <CardTitle>{expense.title}</CardTitle>
 
-                    <div className="flex gap-2 items-center">
-                      <EditExpenseForm expense={expense} trip={trip} />
-                      <DeleteExpense expense={expense} trip={trip} />
-                    </div>
+                    {loggedUser && (
+                      <div className="flex gap-2 items-center">
+                        <EditExpenseForm expense={expense} trip={trip} />
+                        <DeleteExpense expense={expense} trip={trip} />
+                      </div>
+                    )}
                   </div>
                   <CardDescription className="text-md">
                     {formatDate(expense.date)} •{" "}
@@ -80,12 +79,14 @@ export default function ExpenseTab({ trip }) {
                     </div>
                   </div>
 
-                  <ExpenseRepaid
-                    expense={expense}
-                    expenseMember={trip?.members.find(
-                      (m) => m.id === expense.paidById
-                    )}
-                  />
+                  {loggedUser && (
+                    <ExpenseRepaid
+                      expense={expense}
+                      expenseMember={trip?.members.find(
+                        (m) => m.id === expense.paidById
+                      )}
+                    />
+                  )}
                 </CardContent>
               </Card>
             );

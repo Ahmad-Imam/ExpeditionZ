@@ -6,7 +6,7 @@ import BalanceTab from "./BalanceTab";
 import ExpenseTab from "./ExpenseTab";
 import SettlementTab from "./SettlementTab";
 
-export default function Expense({ trip }) {
+export default function Expense({ trip, loggedUser }) {
   const getTotalExpenses = () => {
     return trip?.expenses.reduce((sum, expense) => sum + expense.amount, 0);
   };
@@ -28,10 +28,10 @@ export default function Expense({ trip }) {
                 Total: {formatCurrency(getTotalExpenses())}
               </p>
             </div>
-            <AddExpenseForm trip={trip} />
+            {loggedUser && <AddExpenseForm trip={trip} />}
           </div>
 
-          <ExpenseTab trip={trip} />
+          <ExpenseTab trip={trip} loggedUser={loggedUser} />
         </TabsContent>
 
         <TabsContent value="balances">

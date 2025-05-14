@@ -24,12 +24,10 @@ export async function searchUsersByName(query) {
     },
   });
 
-  // console.log(users);
   return users;
 }
 
 export async function createTripAction(data) {
-  //   console.log(data);
   const { name, destination, startDate, endDate, description, members } = data;
 
   const loggedUser = await getLoggedUser();
@@ -53,10 +51,6 @@ export async function createTripAction(data) {
       creatorId: loggedUser.id,
       description,
       members: {
-        //   name: loggedUser.name,
-        //   userId: loggedUser.id,
-        //   isAdmin: true,
-        // },
         create: allMembers.map((member) => ({
           name: member.name,
           userId: member.id,
@@ -147,9 +141,6 @@ export async function getTrips() {
 }
 
 export async function getTripById(id) {
-  const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized");
-
   const trip = await db.trip.findUnique({
     where: {
       id,
@@ -169,7 +160,7 @@ export async function getTripById(id) {
         include: {
           expenseMembers: {
             include: {
-              member: true, // if you want member details as well
+              member: true,
             },
           },
         },
@@ -185,7 +176,7 @@ export async function getTripById(id) {
 
 export async function getLoggedTripMember(tripId) {
   const loggedUser = await getLoggedUser();
-  if (!loggedUser) throw new Error("Unauthorized. Please login.");
+  if (!loggedUser) return null;
 
   const tripMember = await db.member.findFirst({
     where: {
