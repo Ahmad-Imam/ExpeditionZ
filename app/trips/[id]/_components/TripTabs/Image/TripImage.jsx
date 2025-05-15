@@ -29,7 +29,7 @@ export default async function TripImage({ trip, loggedUser, loggedMember }) {
         </div>
       ) : (
         <div className="flex flex-col gap-10">
-          <div className="flex gap-5 items-center justify-between">
+          <div className="flex gap-5 items-center justify-end">
             {loggedMember && <AddTripImage trip={trip} />}
           </div>
           <div>

@@ -222,7 +222,7 @@ export default function FAQPage() {
               defaultValue="general"
               className="w-full flex flex-col justify-between md:gap-20 sm:gap-30 lg:gap-0"
             >
-              <TabsList className="grid lg:grid-cols-10 sm:grid-cols-3 md:grid-cols-4 mb-12 w-full gap-6">
+              <TabsList className="grid lg:grid-cols-10 sm:grid-cols-4 mb-12 w-full gap-6">
                 <TabsTrigger value="general">General</TabsTrigger>
                 <TabsTrigger value="trips">Trip</TabsTrigger>
                 <TabsTrigger value="expenses">Expenses</TabsTrigger>

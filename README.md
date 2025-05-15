@@ -2,11 +2,11 @@
 
 ## Welcome to ExpeditionZ.
 
-Live:
+Live: https://expeditionz.vercel.app/
 
 ## Information
 
-ExpeditionZ is a trip management platform built in Next.js, Prisma and NeonDB.
+ExpeditionZ is a trip management platform built in Next.js, Prisma and NeonDB. It uses MapBox for location map and autumn, stripe for payments. The stripe and clerk are purposefully left in development mode as this is a hobby project.
 
 ## Frontend Instructions
 
@@ -92,4 +92,5 @@ ExpeditionZ is a trip management platform built in Next.js, Prisma and NeonDB.
 
 ### Application Limitations
 
-- Currently, it's not possible to edit or delete a job once created.
+- Currently, it's not possible to delete a trip once created.
+- Weather and Info tabs is dependant on GenAI api. If the service is down then no results to show

@@ -7,6 +7,8 @@ import WeatherCurrent from "./WeatherCurrent";
 import WeatherForecast from "./WeatherForecast";
 import WeatherTrip from "./WeatherTrip";
 import { formatDate } from "@/lib/utils";
+import { toast } from "sonner";
+import Loading from "./loading";
 export default function WeatherClient({ trip }) {
   const [loading, setLoading] = useState(false);
 
@@ -28,6 +30,7 @@ export default function WeatherClient({ trip }) {
 
         setWeatherData(data);
       } catch (error) {
+        toast.error("Error fetching weather data. Please try again later.");
         console.error("Error fetching weather data:", error);
       } finally {
         setLoading(false);
@@ -40,6 +43,10 @@ export default function WeatherClient({ trip }) {
 
     fetchWeatherData(newTrip);
   }, []);
+
+  if (loading || !weatherData) {
+    return <Loading />;
+  }
 
   return (
     <div>
