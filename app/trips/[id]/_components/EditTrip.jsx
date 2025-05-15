@@ -259,7 +259,7 @@ export default function EditTripDialog({ initialData }) {
                                         [idx]: [],
                                       }));
                                     }}
-                                    className="p-4 cursor-pointer bg-background rounded-md border-2 border-accent-foreground hover:bg-accent hover:border-accent/80 "
+                                    className="p-4 cursor-pointer bg-background rounded-md border-2 border-accent-foreground hover:bg-muted hover:border-accent/80 "
                                   >
                                     {u.name} ({u.email})
                                   </li>
@@ -275,19 +275,6 @@ export default function EditTripDialog({ initialData }) {
                         </p>
                       )}
                     </div>
-
-                    {/* <div className="flex-1 hidden">
-                      <Input
-                        placeholder="Email"
-                        className="bg-gray-100 cursor-not-allowed"
-                        {...register(`members.${idx}.email`)}
-                      />
-                      {errors.members?.[idx]?.email && (
-                        <p className="text-red-600 text-sm mt-1">
-                          {errors.members[idx].email.message}
-                        </p>
-                      )}
-                    </div> */}
 
                     <div className="flex items-center px-2">
                       <Controller

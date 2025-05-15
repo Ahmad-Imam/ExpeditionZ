@@ -2,6 +2,11 @@ import React from "react";
 import PriceTable from "./PriceTable";
 import { getLoggedUser } from "@/actions/user";
 
+export const metadata = {
+  title: "ExpeditionZ - Pricing",
+  description: "Choose the perfect plan for your needs",
+};
+
 export default async function PricingPage() {
   const loggedUser = await getLoggedUser();
 

@@ -40,10 +40,9 @@ export default function Checklist({ trip, loggedUser }) {
         </div>
       </div>
 
-      {/* Progress bar */}
-      <div className="w-full rounded-full h-2.5 bg-accent">
+      <div className="w-full rounded-full h-2.5 bg-primary">
         <div
-          className=" h-2.5 rounded-full bg-accent-foreground"
+          className=" h-2.5 rounded-full bg-secondary"
           style={{ width: `${stats.percentage}%` }}
         ></div>
       </div>

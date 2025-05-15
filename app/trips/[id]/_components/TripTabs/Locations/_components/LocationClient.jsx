@@ -103,8 +103,8 @@ export default function LocationClient({ trip, loggedUser }) {
                 onClick={() => setSelectedLocation(location)}
                 className={`cursor-pointer ${
                   selectedLocation?.id === location?.id
-                    ? "bg-card-foreground/10"
-                    : ""
+                    ? "bg-muted"
+                    : "bg-muted/50"
                 }`}
               >
                 <CardHeader className="">

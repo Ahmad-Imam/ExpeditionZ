@@ -25,6 +25,11 @@ import PollSystem from "./_components/TripTabs/Polls/PollSystem";
 import TripImage from "./_components/TripTabs/Image/TripImage";
 import { getLoggedUser } from "@/actions/user";
 
+export const metadata = {
+  title: "ExpeditionZ - Trip Details",
+  description: "View and manage your trips",
+};
+
 export default async function TripDetailPage({ params }) {
   const { id: tripId } = await params;
 
@@ -35,40 +40,64 @@ export default async function TripDetailPage({ params }) {
   return (
     <div className="min-h-screen sm:w-xl md:2xl lg:w-4xl xl:w-3/4 mx-auto ">
       <main className=" mx-auto px-4 py-10">
-        <TripHeader trip={trip} loggedUser={loggedUser} />
+        <TripHeader trip={trip} loggedUser={loggedMember} />
 
         <Tabs defaultValue="expenses" className="w-full">
           <TabsList className="grid grid-cols-8 mb-8 w-full">
-            <TabsTrigger value="expenses" className="flex items-center gap-2">
+            <TabsTrigger
+              value="expenses"
+              className="flex items-center gap-2 text-md"
+            >
               <DollarSign className="h-4 w-4" />
               <span className="hidden lg:inline">Expenses</span>
             </TabsTrigger>
-            <TabsTrigger value="checklist" className="flex items-center gap-2">
+            <TabsTrigger
+              value="checklist"
+              className="flex items-center gap-2 text-md"
+            >
               <CheckSquare className="h-4 w-4" />
               <span className="hidden lg:inline">Checklist</span>
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="flex items-center gap-2">
+            <TabsTrigger
+              value="timeline"
+              className="flex items-center gap-2 text-md"
+            >
               <Clock className="h-4 w-4" />
               <span className="hidden lg:inline">Timeline</span>
             </TabsTrigger>
-            <TabsTrigger value="locations" className="flex items-center gap-2">
+            <TabsTrigger
+              value="locations"
+              className="flex items-center gap-2 text-md"
+            >
               <Map className="h-4 w-4" />
               <span className="hidden lg:inline">Locations</span>
             </TabsTrigger>
-            <TabsTrigger value="polls" className="flex items-center gap-2">
+            <TabsTrigger
+              value="polls"
+              className="flex items-center gap-2 text-md"
+            >
               <Vote className="h-4 w-4" />
               <span className="hidden lg:inline">Polls</span>
             </TabsTrigger>
-            <TabsTrigger value="weather" className="flex items-center gap-2">
+            <TabsTrigger
+              value="weather"
+              className="flex items-center gap-2 text-md"
+            >
               <Cloud className="h-4 w-4" />
               <span className="hidden lg:inline">Weather</span>
             </TabsTrigger>
-            <TabsTrigger value="info" className="flex items-center gap-2">
+            <TabsTrigger
+              value="info"
+              className="flex items-center gap-2 text-md"
+            >
               <Globe className="h-4 w-4" />
               <span className="hidden lg:inline">Info</span>
             </TabsTrigger>
 
-            <TabsTrigger value="file" className="flex items-center gap-2">
+            <TabsTrigger
+              value="file"
+              className="flex items-center gap-2 text-md"
+            >
               <Image className="h-4 w-4" />
               <span className="hidden lg:inline">Gallery</span>
             </TabsTrigger>

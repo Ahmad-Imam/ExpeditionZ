@@ -5,6 +5,11 @@ import Link from "next/link";
 import { getTrips } from "@/actions/trip";
 import TripsList from "./_components/TripsList";
 
+export const metadata = {
+  title: "ExpeditionZ - All Trips",
+  description: "View and manage your trips",
+};
+
 export default async function TripsPage() {
   const allTrips = await getTrips();
 

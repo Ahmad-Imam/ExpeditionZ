@@ -38,28 +38,28 @@ export default function WeatherCurrent({ destination, weatherData }) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
-            <div className="flex flex-col items-center p-4 bg-accent rounded-lg">
+            <div className="flex flex-col items-center p-4 bg-muted rounded-lg">
               <Thermometer className="h-6 w-6 text-red-500 mb-2" />
               <div className="text-2xl font-bold">
                 {weatherData?.current?.temp}°C
               </div>
               <div className="text-md">Temperature</div>
             </div>
-            <div className="flex flex-col items-center p-4 bg-accent rounded-lg">
+            <div className="flex flex-col items-center p-4 bg-muted rounded-lg">
               <Thermometer className="h-6 w-6 text-orange-500 mb-2" />
               <div className="text-2xl font-bold">
                 {weatherData?.current?.feels_like}°C
               </div>
               <div className="text-md ">Feels Like</div>
             </div>
-            <div className="flex flex-col items-center p-4 bg-accent rounded-lg">
+            <div className="flex flex-col items-center p-4 bg-muted rounded-lg">
               <Umbrella className="h-6 w-6 text-blue-500 mb-2" />
               <div className="text-2xl font-bold">
                 {weatherData?.current?.humidity}%
               </div>
               <div className="text-md ">Humidity</div>
             </div>
-            <div className="flex flex-col items-center p-4 bg-accent rounded-lg">
+            <div className="flex flex-col items-center p-4 bg-muted rounded-lg">
               <Wind className="h-6 w-6 text-lime-500 mb-2" />
               <div className="text-2xl font-bold">
                 {weatherData?.current?.wind_speed} km/h

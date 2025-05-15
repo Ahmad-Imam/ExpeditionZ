@@ -68,7 +68,7 @@ export default function Home() {
 
 function FeatureCard({ icon, title, description }) {
   return (
-    <div className=" rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+    <div className="bg-card rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
       <div className="mb-4 flex justify-center">{icon}</div>
       <h3 className="text-xl font-semibold  mb-2">{title}</h3>
       <p className="">{description}</p>

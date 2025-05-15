@@ -42,7 +42,7 @@ export default function TripCard({ trip }) {
               {trip?.members.slice(0, 3).map((member, i) => (
                 <div
                   key={i}
-                  className="h-8 w-8 rounded-full bg-accent flex items-center justify-center border-2 border-muted-foreground"
+                  className="h-8 w-8 rounded-full bg-muted flex items-center justify-center border-2 border-foreground"
                   title={member.name}
                 >
                   <span className="text-xs font-medium ">
@@ -54,7 +54,7 @@ export default function TripCard({ trip }) {
                 </div>
               ))}
               {trip?.members.length > 3 && (
-                <div className="h-8 w-8 rounded-full bg-accent flex items-center justify-center border-2 border-muted-foreground">
+                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center border-2 border-foreground">
                   <span className="text-xs font-medium ">
                     +{trip?.members.length - 3}
                   </span>

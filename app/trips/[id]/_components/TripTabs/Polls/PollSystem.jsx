@@ -80,11 +80,11 @@ export default async function PollSystem({ trip, loggedUser }) {
                     )}
                   </div>
                   <div className="text-md  flex items-center gap-2">
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-accent">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-primary">
                       {poll.isActive ? "Active" : "Closed"}
                     </span>
 
-                    <span className="text-accent font-bold">
+                    <span className="text-secondary font-bold">
                       {totalVotes} votes
                     </span>
                   </div>
@@ -127,12 +127,10 @@ export default async function PollSystem({ trip, loggedUser }) {
                               {percentage}%
                             </span>
                           </div>
-                          <div className="w-full bg-accent rounded-full h-2">
+                          <div className="w-full bg-muted rounded-full h-2">
                             <div
                               className={`h-2 rounded-full ${
-                                isWinning
-                                  ? "bg-accent-foreground"
-                                  : "bg-accent-foreground"
+                                isWinning ? "bg-primary" : ""
                               }`}
                               style={{ width: `${percentage}%` }}
                             ></div>

@@ -9,7 +9,7 @@ export default async function TripImage({ trip, loggedUser, loggedMember }) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-2xl font-bold ">Image Gallery</h3>
+        <h3 className="text-2xl font-bold ">Trip Gallery</h3>
       </div>
       {!loggedUser?.isPremium ? (
         <div className="text-center py-12  rounded-lg border">

@@ -39,7 +39,6 @@ export default async function Header() {
           </Link>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex items-center space-x-2 md:space-x-4">
           <SignedIn>
             <Link href="/trips">
@@ -55,7 +54,6 @@ export default async function Header() {
               </Button>
             </Link>
 
-            {/* Growth Tools Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="flex items-center gap-2">
@@ -71,12 +69,6 @@ export default async function Header() {
                     Trip
                   </Link>
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem asChild>
-                  <Link href="/interview" className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4" />
-                    Interview Prep
-                  </Link>
-                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </SignedIn>

@@ -35,7 +35,7 @@ export default function TripsList({ allTrips }) {
 
         {filteredTrips.length === 0 ? (
           <div className="text-center py-12">
-            <div className="bg-accent inline-block p-4 rounded-full mb-4">
+            <div className="bg-muted inline-block p-4 rounded-full mb-4">
               <Plane className="h-8 w-8 " />
             </div>
             <h3 className="text-xl font-semibold mb-2">No trips found</h3>

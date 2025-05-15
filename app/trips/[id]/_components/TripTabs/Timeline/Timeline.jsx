@@ -35,11 +35,9 @@ export default function Timeline({ trip, loggedUser }) {
         </div>
       ) : (
         <div className="relative">
-          {/* Vertical line in the middle with progress indicator */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-accent translate-x-1/2">
-            {/* Progress overlay */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary translate-x-1/2">
             <div
-              className="absolute left-0 top-0 w-full bg-accent-foreground transition-all duration-500"
+              className="absolute left-0 top-0 w-full bg-secondary transition-all duration-500"
               style={{
                 height: `${
                   trip.timeline.length > 0
@@ -63,7 +61,6 @@ export default function Timeline({ trip, loggedUser }) {
                     isEven ? "flex-row" : "flex-row-reverse"
                   } justify-center`}
                 >
-                  {/* Content on the left or right */}
                   <div
                     className={`w-1/2 ${isEven ? "text-right pr-8" : "pl-8"}`}
                   >
@@ -119,32 +116,30 @@ export default function Timeline({ trip, loggedUser }) {
                     </Card>
                   </div>
 
-                  {/* Timeline dot in the middle */}
                   <div className="relative z-10 flex-shrink-0">
                     <div
                       className={`h-12 w-12 rounded-full flex items-center justify-center border-2 ${
                         point.completed
-                          ? "bg-primary-foreground"
-                          : " border-accent-foreground bg-accent"
+                          ? "bg-primary"
+                          : " border-accent-foreground bg-card"
                       }`}
                     >
                       {point.completed ? (
-                        <Check className="h-6 w-6" />
+                        <Check className="h-6 w-6 text-card" />
                       ) : (
                         <Calendar className="h-6 w-6" />
                       )}
                     </div>
-                    {/* Connector lines to the vertical bar */}
+
                     <div
                       className={`absolute top-1/2 ${
                         isEven ? "right-full" : "left-full"
                       } w-4 h-0.5 ${
-                        point.completed ? "bg-primary" : "bg-accent "
+                        point.completed ? "bg-primary" : "bg-secondary "
                       }`}
                     ></div>
                   </div>
 
-                  {/* Empty space on the other side */}
                   <div className="w-1/2"></div>
                 </div>
               );

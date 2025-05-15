@@ -215,7 +215,7 @@ export default function AddTripForm() {
                                       [idx]: [],
                                     }));
                                   }}
-                                  className="p-4 cursor-pointer bg-accent rounded-md border-2 border-accent-foreground "
+                                  className="p-4 cursor-pointer bg-muted rounded-md border-2 border-accent-foreground "
                                 >
                                   {u.name} ({u.email})
                                 </li>

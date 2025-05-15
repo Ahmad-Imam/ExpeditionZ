@@ -1,8 +1,24 @@
 "use server";
 
-import { testData } from "@/lib/mock-data";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getLoggedUser } from "./user";
+
+const testData = {
+  tips: [
+    "Most museums are closed on Mondays or Tuesdays",
+    "Tipping is not required but rounding up is appreciated",
+    "The Paris Museum Pass can save money if you plan to visit multiple museums",
+    "Metro tickets can be purchased in bundles for a discount",
+    "Many restaurants offer fixed-price lunch menus that are a good value",
+  ],
+  phrases: [
+    { phrase: "Hello", translation: "Bonjour" },
+    { phrase: "Thank you", translation: "Merci" },
+    { phrase: "Excuse me", translation: "Excusez-moi" },
+    { phrase: "Do you speak English?", translation: "Parlez-vous anglais?" },
+    { phrase: "How much is this?", translation: "Combien ça coûte?" },
+  ],
+};
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
@@ -68,7 +84,7 @@ export async function generateTripWeather(trip) {
 
 export async function generateTripLocationInfo(trip) {
   const prompt = `
-          go through this whole sample json ${testData}, and provide results in ONLY the JSON format I provided without any additional notes or explanations:
+          go through this whole sample json ${trip}, and provide results in ONLY the JSON format I provided without any additional notes or explanations:
 
           the location is name: ${trip.destination} .
           the startDate is ${trip.startDate} .
@@ -107,6 +123,7 @@ export async function generateTripLocationInfo(trip) {
                   for the phrases, consider the country of the location and fill based on that
                   and provide EXACTLY in the structure of this:
                   ${testData.phrases}
+                  DONOT COPY PASTE THE PHRASES FROM THE EXAMPLE JSON, JUST FOLLOW THE STRUCTURE AND FILL BASED ON THE LOCATION PROVIDED.
        
             
 

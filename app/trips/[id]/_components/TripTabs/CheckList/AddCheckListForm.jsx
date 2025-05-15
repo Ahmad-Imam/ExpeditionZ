@@ -118,7 +118,7 @@ export default function AddCheckListForm({ trip, categories }) {
                           <SelectItem
                             key={category.value}
                             value={category.value}
-                            className={"hover:bg-accent cursor-pointer"}
+                            className={"hover:bg-muted cursor-pointer"}
                           >
                             {category.label}
                           </SelectItem>
@@ -149,7 +149,7 @@ export default function AddCheckListForm({ trip, categories }) {
                           <SelectItem
                             key={member.id}
                             value={member.id}
-                            className={"hover:bg-accent cursor-pointer"}
+                            className={"hover:bg-muted cursor-pointer"}
                           >
                             {member.name}
                           </SelectItem>

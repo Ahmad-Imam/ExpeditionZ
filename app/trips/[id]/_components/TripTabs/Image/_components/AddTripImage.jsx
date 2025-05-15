@@ -21,6 +21,7 @@ import {
 import { ImagePlus, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 
 export default function AddTripImage({ trip }) {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -107,6 +108,9 @@ export default function AddTripImage({ trip }) {
           tripId: trip.id,
           imageObj: imageObj,
         });
+        if (updatedTrip) {
+          toast.success("Image uploaded successfully");
+        }
       } catch (error) {
         if (error instanceof ImageKitAbortError) {
           console.error("Upload aborted:", error.reason);
@@ -119,6 +123,7 @@ export default function AddTripImage({ trip }) {
         } else {
           console.error("Upload error:", error);
         }
+        toast.error("Upload failed. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -171,7 +176,7 @@ export default function AddTripImage({ trip }) {
                 />
                 <button
                   onClick={handleRemoveImage}
-                  className="absolute top-2 right-2 p-1 bg-accent rounded-full  hover:bg-black/70 transition"
+                  className="absolute top-2 right-2 p-1 bg-muted rounded-full  hover:bg-black/70 transition"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -186,9 +191,7 @@ export default function AddTripImage({ trip }) {
               </div>
             )}
           </div>
-          {/* <div className="flex items-center justify-between gap-2">
-            Upload progress: <progress value={progress} max={100}></progress>
-          </div> */}
+
           <input
             type="file"
             accept="image/*"

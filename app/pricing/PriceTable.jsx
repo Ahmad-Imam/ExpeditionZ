@@ -140,7 +140,7 @@ export default function PriceTable({ loggedUser }) {
                 "border-primary shadow-lg relative overflow-hidden"
             )}
           >
-            {plan.popular && (
+            {plan.popular && billingCycle === "yearly" && (
               <div className="absolute top-0 right-0">
                 <div className="w-32 h-32 transform rotate-45 translate-x-12 -translate-y-16 bg-primary text-primary-foreground">
                   <div className="absolute bottom-4 left-1 text-xs font-semibold text-center w-full">
